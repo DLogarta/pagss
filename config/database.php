@@ -76,6 +76,20 @@ return [
             'engine' => null,
         ],
 
+        'user_admin' => [
+            'driver' => 'mysql',
+            'host' => env('USER_ADMIN_DB_HOST', '127.0.0.1'),
+            'port' => env('USER_ADMIN_DB_PORT', '3306'),
+            'database' => env('USER_ADMIN_DB_DATABASE', 'lar_pagss_users'),
+            'username' => env('USER_ADMIN_DB_USERNAME', 'root'),
+            'password' => env('USER_ADMIN_DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),

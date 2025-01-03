@@ -120,6 +120,9 @@
         $('#example2').DataTable({
             processing: true, // Show processing indicator
             serverSide: true, // Enable server-side processing
+            lengthChange: false,
+            autoWidth: false,
+            responsive: true,
             columnDefs: [
                 { "orderable": false, "targets": -1 } // Disable sorting on the last column
             ],
@@ -197,11 +200,27 @@
         })
     </script>
 @endif
+@if (session('update-failed'))
+    <script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('update-failed') }}'
+        })
+    </script>
+@endif
 @if (session('add-success'))
     <script>
         Toast.fire({
             icon: 'success',
             title: '{{ session('add-success') }}'
+        })
+    </script>
+@endif
+@if (session('add-failed'))
+    <script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('add-failed') }}'
         })
     </script>
 @endif
