@@ -1,4 +1,7 @@
 <?php
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\CheckPermission;
+
 // Landing Routes
 require __DIR__.'/destination/landing.php';
 

@@ -20,6 +20,8 @@
 	<link rel="stylesheet" href="{{ asset('/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- Sweet Alert style -->
     <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <!-- BS Duallistbox -->
+    <link rel="stylesheet" href="{{ asset('plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css') }}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -79,7 +81,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" role="button">
+                <a class="nav-link" href="/logout" role="button">
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             </li>
@@ -222,12 +224,14 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            @canAccess('user-management')
                             <li class="nav-item">
                                 <a href="user-management" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Users</p>
                                 </a>
                             </li>
+                            @endcanAccess
                             <li class="nav-item">
                                 <a href="role-management" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>

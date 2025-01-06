@@ -44,5 +44,8 @@
 <script src="{{ asset('/js/demo.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('/js/pages/dashboard2.js') }}"></script>
+
+<!-- BS Duallistbox -->
+<script src="{{ asset('/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
 </body>
 </html>

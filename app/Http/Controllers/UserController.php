@@ -2,12 +2,78 @@
 
 namespace App\Http\Controllers;
 use App\Models\Roles;
+use App\Models\Users;
 use App\Models\Permissions;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserCreatedMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    public function add_user(Request $request){
+        try {
+            $validatedData = $request->validate([
+                'id_number' => 'required|string|max:11',
+                'name' => 'required|string|max:255',
+                'position' => 'required|string|max:50',
+                'email' => 'required|string|max:255',
+                'roles' => 'required|array',
+            ]);
+    
+            $user = new Users;
+            $user->id_number = $validatedData['id_number'];
+            $user->name = $validatedData['name'];
+            $user->pfp = "pagss_default_user.jpg";
+            $user->position = $validatedData['position'];
+            $user->email = $validatedData['email'];
+            $password = Str::random(12);
+            $hashedPassword = Hash::make($password);
+            $user->password = $hashedPassword;
+    
+            $user->save();
+    
+            $user->roles()->attach($validatedData['roles']);
+
+            Mail::to($validatedData['email'])->send(new UserCreatedMail($user, $password));
+    
+            return redirect('/user-management')->with('add-success', 'User information added successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('add-failed', "An error occured. Error: " . $e->getMessage());
+        }
+    }
+
+    public function update_user(Request $request) {
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|exists:user_admin.users,id',
+                'id_number' => 'required|string|max:11',
+                'name' => 'required|string|max:255',
+                'position' => 'required|string|max:50',
+                'email' => 'required|string|max:255',
+                'roles' => 'required|array',
+            ]);
+    
+            $user = Users::find($validatedData['id']);
+    
+            $user->id_number = $validatedData['id_number'];
+            $user->name = $validatedData['name'];
+            $user->position = $validatedData['position'];
+            $user->email = $validatedData['email'];
+    
+            $user->save();
+    
+            $user->roles()->detach();
+    
+            $user->roles()->attach($validatedData['roles']);
+    
+            return redirect('/user-management')->with('update-success', 'User information updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('update-failed', "An error occured. Error: " . $e->getMessage());
+        }
+    }
+
     public function add_role(Request $request){
         try {
             $validatedData = $request->validate([

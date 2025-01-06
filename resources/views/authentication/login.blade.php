@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="{{ asset('/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('/css/adminlte.min.css') }}">
+  <!-- Sweet Alert style -->
+  <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -25,9 +27,10 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="#" method="post">
+      <form action="/login/auth" method="post">
+        @csrf
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" class="form-control" placeholder="Email" name="email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -35,7 +38,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Password" name="password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -74,5 +77,47 @@
 <script src="{{ asset('/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('/js/adminlte.min.js') }}"></script>
+
+<script src="{{ asset('/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 </body>
 </html>
+<script>
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 5000
+    });
+</script>
+@if (session('login-failed'))
+<script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('login-failed') }}'
+        })
+    </script>
+@endif
+@if (session('login-sucess'))
+<script>
+        Toast.fire({
+            icon: 'success',
+            title: '{{ session('login-sucess') }}'
+        })
+    </script>
+@endif
+@if (session('logged-out'))
+<script>
+        Toast.fire({
+            icon: 'success',
+            title: '{{ session('logged-out') }}'
+        })
+    </script>
+@endif
+@if (session('error'))
+<script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('error') }}'
+        })
+    </script>
+@endif
