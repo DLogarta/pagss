@@ -1,3 +1,29 @@
+<?php
+    use App\Models\Users;
+    // Refresh permissions if they have changed
+    $user = auth()->user();
+    $current = Users::join('user_roles', 'users.id', '=', 'user_roles.user_id')
+            ->join('role_permissions', 'user_roles.role_id', '=', 'role_permissions.role_id')
+            ->join('permissions', 'role_permissions.permission_id', '=', 'permissions.id')
+            ->where('users.id', $user->id)
+            ->selectRaw('
+                users.id, 
+                users.id_number, 
+                users.name, 
+                users.pfp, 
+                users.position,
+                users.first_login,
+                users.email, 
+                GROUP_CONCAT(permissions.pages) AS pages
+            ')
+            ->groupBy('users.id', 'users.id_number', 'users.name', 'users.pfp', 'users.position', 'users.first_login', 'users.email')
+            ->first();
+
+    if (session('user') != $current) {
+        session()->put('user', $current); // Update the session with fresh permissions
+    }
+?>
+<?php $user = session('user') ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,10 +128,10 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="{{ asset('/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                    <img src="{{ asset('/img/users/' . $user->pfp) }}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="#" class="d-block text-capitalize">{{ $user->name }}</a>
                 </div>
             </div>
 
@@ -215,105 +241,137 @@
                     </li>
 
                     <!-- Admin Panel -->
-                    <li class="nav-header">Admin Panel</li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>User Management
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            @canAccess('user-management')
+                    @if(canAccess('user-management') || canAccess('role-management') || canAccess('permission-management') || canAccess('user-activity-reports') || canAccess('content-engagement-metrics'))
+                        <li class="nav-header">Admin Panel</li>
+                        @if(canAccess('user-management') || canAccess('role-management') || canAccess('permission-management'))
                             <li class="nav-item">
-                                <a href="user-management" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Users</p>
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>User Management
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    @canAccess('user-management')
+                                    <li class="nav-item">
+                                        <a href="user-management" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Users</p>
+                                        </a>
+                                    </li>
+                                    @endcanAccess
+                                    @canAccess('role-management')
+                                    <li class="nav-item">
+                                        <a href="role-management" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Roles</p>
+                                        </a>
+                                    </li>
+                                    @endcanAccess
+                                    @canAccess('permission-management')
+                                    <li class="nav-item">
+                                        <a href="permission-management" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Permissions</p>
+                                        </a>
+                                    </li>
+                                    @endcanAccess
+                                </ul>
                             </li>
-                            @endcanAccess
+                        @endif
+                        @if(canAccess('user-activity-reports') || canAccess('content-engagement-metrics'))
                             <li class="nav-item">
-                                <a href="role-management" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Roles</p>
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-chart-bar"></i>
+                                    <p>User Analytics
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    @canAccess('user-activity-reports')
+                                    <li class="nav-item">
+                                        <a href="user-activity-reports" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>User Activity Reports</p>
+                                        </a>
+                                    </li>
+                                    @endcanAccess
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Content Engagement Metrics</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a href="permission-management" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Permissions</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-chart-bar"></i>
-                            <p>User Analytics
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="user-activity-reports" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>User Activity Reports</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Content Engagement Metrics</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                        @endif
+                    @endif
 
                     <!-- Content Moderation Panel -->
-                    <li class="nav-header">Content Moderation</li>
-                    <li class="nav-item">
-                        <a href="c-about-us" class="nav-link">
-                            <i class="nav-icon fas fa-question"></i>
-                            <p>About Us</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="c-people" class="nav-link">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>People</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="c-clients" class="nav-link">
-                            <i class="nav-icon fas fa-handshake"></i>
-                            <p>Clients</p>
-                        </a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-chart-bar"></i>
-                            <p>User Analytics
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="user-activity-reports" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>User Activity Reports</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Content Engagement Metrics</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li> -->
+                    @if(canAccess('c-about-us') || canAccess('c-people') || canAccess('c-clients'))
+                        <li class="nav-header">Content Moderation</li>
+                        @canAccess('c-about-us')
+                        <li class="nav-item">
+                            <a href="c-about-us" class="nav-link">
+                                <i class="nav-icon fas fa-question"></i>
+                                <p>About Us</p>
+                            </a>
+                        </li>
+                        @endcanAccess
+                        @canAccess('c-people')
+                        <li class="nav-item">
+                            <a href="c-people" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>People</p>
+                            </a>
+                        </li>
+                        @endcanAccess
+                        @canAccess('c-clients')
+                        <li class="nav-item">
+                            <a href="c-clients" class="nav-link">
+                                <i class="nav-icon fas fa-handshake"></i>
+                                <p>Clients</p>
+                            </a>
+                        </li>
+                        @endcanAccess
+                    @endif
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
         </div>
         <!-- /.sidebar -->
     </aside>
+    
+    @if($user->first_login == "1")
+    <div class="modal-backdrop" id="modalBackdrop" style="display: block; opacity: 0.5"></div>
+        <div class="modal" id="editClientModal" style="display: block; opacity: 1;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="/change-password" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-header">
+                            <h4 class="modal-title">Update your password</h4>
+                        </div>
+                        <div class="modal-body">
+                                <input class="form-control" name="id" value="{{ $user->id }}" hidden required>
+
+                                <p>You need to update your password because this is the first time you are logging in.</p>
+                                
+                                <label for="name">Current Password:</label>
+                                <input class="form-control" type="password" name="current_password" required>
+
+                                <label for="name">New Password:</label>
+                                <input class="form-control" type="text" name="new_password" required>
+
+                                <label for="name">Repeat Password:</label>
+                                <input class="form-control" type="text" name="repeat_password" required>
+                        </div>
+                        <div class="modal-footer justify-content-end">
+                            <button type="submit" class="btn btn-primary">Change Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif

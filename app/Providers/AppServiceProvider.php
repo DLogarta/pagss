@@ -22,8 +22,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::if('canAccess', function ($page){
             $user = session('user');
-            
-            return in_array($page, json_decode($user->pages, true));
+            $cleanedPages = str_replace(['[', ']', '"'], '', $user->pages);
+            $pages = explode(',', $cleanedPages);
+            return in_array($page, $pages);
         });
     }
 }

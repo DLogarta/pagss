@@ -49,3 +49,51 @@
 <script src="{{ asset('/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
 </body>
 </html>
+<script>
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 5000
+    });
+</script>
+@if (session('error'))
+<script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('error') }}'
+        })
+    </script>
+@endif
+@if (session('success'))
+<script>
+        Toast.fire({
+            icon: 'success',
+            title: '{{ session('success') }}'
+        })
+    </script>
+@endif
+@if (session('id'))
+<script>
+        Toast.fire({
+            icon: 'id',
+            title: '{{ session('id') }}'
+        })
+    </script>
+@endif
+@if (session('current_password'))
+<script>
+        Toast.fire({
+            icon: 'current_password',
+            title: '{{ session('current_password') }}'
+        })
+    </script>
+@endif
+@if (session('repeat_password'))
+<script>
+        Toast.fire({
+            icon: 'repeat_password',
+            title: '{{ session('repeat_password') }}'
+        })
+    </script>
+@endif

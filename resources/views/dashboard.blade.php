@@ -1,10 +1,4 @@
 @include('partials/header')
-<?php
-$currentUser = session('user');
-
-$pages = $currentUser->pages;
-echo $pages;
-?>
     <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
