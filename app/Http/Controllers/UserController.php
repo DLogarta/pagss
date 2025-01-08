@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Helpers\Logger;
 use App\Models\Roles;
 use App\Models\Users;
 use App\Models\Permissions;
@@ -108,6 +109,8 @@ class UserController extends Controller
             $role->save();
     
             $role->permissions()->attach($validatedData['permissions']);
+
+            Logger::logAction('Added Role', 'Added ' . $validatedData['name'] . ' role with description: ' . $validatedData['description']);
     
             return redirect('/role-management')->with('add-success', 'Role added successfully.');
         } catch (\Exception $e) {

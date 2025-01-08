@@ -5,6 +5,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Roles;
 use App\Models\Permissions;
 use App\Models\Users;
+use App\Models\Logs;
 
 Route::middleware(['auth'])->group(function(){
     Route::get('user-management', function() {
@@ -58,5 +59,22 @@ Route::middleware(['auth'])->group(function(){
         });
         return Datatables::of($permissions)->make(true);
     })->middleware('checkPage:permission-management');
+
+    Route::get('user-activity-reports', function(){
+        return view('admin/logs');
+    })->middleware('checkPage:user-activity-reports');
+
+    Route::get('user-activity-reports/data', function(){
+        $logs = Logs::with('users');
+
+        return Datatables::of($logs)
+        ->addColumn('name', function($log){
+            return $log->users ? $log->users->name : 'Unknown';
+        })
+        ->addColumn('pfp', function($log){
+            return $log->usres ? $log->users->pfp : 'pagss_default_user.jpg';
+        })
+        ->make(true);
+    });
 });
 

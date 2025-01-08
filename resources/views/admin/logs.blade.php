@@ -1,11 +1,9 @@
-@include('partials.header') 
+    @include('partials.header')
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>User Activity Reports</h1>
-                    </div>
+                    <div class="col-sm-6"></div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
@@ -19,96 +17,42 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="timeline">
-                            <div class="time-label">
-                                <span class="bg-red">10 Feb. 2014</span>
-                            </div>
-
-                            <div>
-                                <i class="fas fa-envelope bg-blue"></i>
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i> 12:05</span>
-                                    <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-                                    <div class="timeline-body">
-                                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                                        weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                        jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                                        quora plaxo ideeli hulu weebly balihoo...
-                                    </div>
-                                    <div class="timeline-footer">
-                                        <a class="btn btn-primary btn-sm">Read more</a>
-                                        <a class="btn btn-danger btn-sm">Delete</a>
-                                    </div>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5>User Activity Reports</h5>
+                                    <!-- <button type="button" class="btn btn-info btn-sm mx-1 mb-1" data-toggle="modal" data-target="#addRoleModal">
+                                            <i class="fas fa-plus"></i> Add New Role
+                                    </button> -->
                                 </div>
-                            </div>
-
-
-                            <div>
-                                <i class="fas fa-user bg-green"></i>
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
-                                    <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request</h3>
-                                </div>
-                            </div>
-
-
-                            <div>
-                                <i class="fas fa-comments bg-yellow"></i>
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i> 27 mins ago</span>
-                                    <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-                                    <div class="timeline-body">
-                                        Take me to your leader!
-                                        Switzerland is small and neutral!
-                                        We are more like Germany, ambitious and misunderstood!
-                                    </div>
-                                    <div class="timeline-footer">
-                                        <a class="btn btn-warning btn-sm">View comment</a>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="time-label">
-                                <span class="bg-green">3 Jan. 2014</span>
-                            </div>
-
-
-                            <div>
-                                <i class="fa fa-camera bg-purple"></i>
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i> 2 days ago</span>
-                                    <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-                                    <div class="timeline-body">
-                                        <img src="https://placehold.it/150x100" alt="...">
-                                        <img src="https://placehold.it/150x100" alt="...">
-                                        <img src="https://placehold.it/150x100" alt="...">
-                                        <img src="https://placehold.it/150x100" alt="...">
-                                        <img src="https://placehold.it/150x100" alt="...">
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div>
-                                <i class="fas fa-video bg-maroon"></i>
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i> 5 days ago</span>
-                                    <h3 class="timeline-header"><a href="#">Mr. Doe</a> shared a video</h3>
-                                    <div class="timeline-body">
-                                        <div class="embed-responsive embed-responsive-16by9">
-                                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tMWkeBIohBs" allowfullscreen></iframe>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-footer">
-                                        <a href="#" class="btn btn-sm bg-maroon">See comments</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <i class="fas fa-clock bg-gray"></i>
+                                <table id="example2" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-capitalize">No.</th>
+                                            <th class="text-capitalize">Date</th>
+                                            <th class="text-capitalize">Author</th>
+                                            <th class="text-capitalize">Action</th>
+                                            <th class="text-capitalize">Description</th>
+                                            <th class="text-capitalize">IP Address</th>
+                                            <th class="text-capitalize">User Agent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="text-capitalize">No.</th>
+                                            <th class="text-capitalize">Date</th>
+                                            <th class="text-capitalize">Author</th>
+                                            <th class="text-capitalize">Action</th>
+                                            <th class="text-capitalize">Description</th>
+                                            <th class="text-capitalize">IP Address</th>
+                                            <th class="text-capitalize">User Agent</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -117,3 +61,108 @@
         </section>
     </div>
 @include('partials.footer')
+<script>
+    $(document).ready(function () {
+        $('#example2').DataTable({
+            processing: true, // Show processing indicator
+            serverSide: true, // Enable server-side processing
+            lengthChange: false,
+            autoWidth: false,
+            responsive: true,
+            ajax: {
+                url: '/user-activity-reports/data',
+                type: 'GET'
+            },
+            order: [[0, 'desc']],
+            columns: [
+                { data: 'id', className: 'align-middle text-capitalize' },
+                { 
+                    data: 'created_at', 
+                    className: 'align-middle text-capitalize', 
+                    render: function(data, type, row) {
+                        if (data) {
+                            // Format the date using JavaScript
+                            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                            return new Date(data).toLocaleDateString('en-US', options); // Change locale as needed
+                        }
+                        return 'N/A'; // Fallback for null or invalid date
+                    }
+                },
+                {
+                    data: 'name', className: 'align-middle',
+                    render: function (data, type, row) {
+                        return `
+                            <div class="user-panel d-flex">
+                                <div class="image">
+                                    <img src="/img/users/${row.pfp}" class="img-circle elevation-2" alt="User Image">
+                                </div>
+                                <div class="info">
+                                    <p class="d-block mb-0 text-capitalize">${data}</p>
+                                </div>
+                            </div>`;
+                    }
+                },
+                { data: 'activity_type', className: 'align-middle text-capitalize' },
+                { data: 'activity_details', className: 'align-middle', style: 'td:first-letter: text-transform-uppercase;' },
+                { data: 'ip_address', className: 'align-middle text-capitalize' },
+                { data: 'user_agent', className: 'align-middle text-capitalize' },
+            ]
+        });
+    });
+</script>
+<script>
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 5000
+    });
+</script>
+@if (session('delete-error'))
+<script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('delete-error') }}'
+        })
+    </script>
+@endif
+@if (session('delete-success'))
+    <script>
+        Toast.fire({
+            icon: 'success',
+            title: '{{ session('delete-success') }}'
+        })
+    </script>
+@endif
+@if (session('update-success'))
+    <script>
+        Toast.fire({
+            icon: 'success',
+            title: '{{ session('update-success') }}'
+        })
+    </script>
+@endif
+@if (session('update-failed'))
+    <script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('update-failed') }}'
+        })
+    </script>
+@endif
+@if (session('add-success'))
+    <script>
+        Toast.fire({
+            icon: 'success',
+            title: '{{ session('add-success') }}'
+        })
+    </script>
+@endif
+@if (session('add-failed'))
+    <script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('add-failed') }}'
+        })
+    </script>
+@endif
