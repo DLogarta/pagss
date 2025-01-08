@@ -74,6 +74,23 @@ class UserController extends Controller
         }
     }
 
+    public function delete_user(Request $request){
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $id = $request->input('id');
+
+        $status = Users::find($id)->delete();
+
+        if($status) {
+            return redirect('/user-management')->with('delete-success', 'User deleted successfully.');
+        } else {
+            // Redirect using URI with an error message
+            return redirect('/user-management')->with('delete-error', 'Failed to delete the user.');
+        }
+    }
+
     public function add_role(Request $request){
         try {
             $validatedData = $request->validate([

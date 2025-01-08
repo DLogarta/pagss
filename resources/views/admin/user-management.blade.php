@@ -185,7 +185,7 @@
                                         data-id="${data}" data-idnumber="${row.id_number}" data-name="${row.name}" data-position="${row.position}" data-email="${row.email}" data-rolesid="${row.roles_id}" data-access='${JSON.stringify(row.roles)}'>
                                         <i class="fas fa-pencil-alt"></i>
                                 </button>
-                                <form method="POST" action="/user-management/delete" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this role?');">
+                                <form method="POST" action="/user-management/delete" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                     @csrf
                                     <input type="hidden" name="id" value="${data}">
                                     <button type="submit" class="btn btn-danger btn-sm">
