@@ -361,10 +361,10 @@
                                 <input class="form-control" type="password" name="current_password" required>
 
                                 <label for="name">New Password:</label>
-                                <input class="form-control" type="text" name="new_password" required>
+                                <input class="form-control" type="password" name="new_password" required>
 
                                 <label for="name">Repeat Password:</label>
-                                <input class="form-control" type="text" name="repeat_password" required>
+                                <input class="form-control" type="password" name="repeat_password" required>
                         </div>
                         <div class="modal-footer justify-content-end">
                             <button type="submit" class="btn btn-primary">Change Password</button>
