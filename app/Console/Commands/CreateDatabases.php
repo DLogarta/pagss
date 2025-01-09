@@ -14,17 +14,17 @@ class CreateDatabases extends Command
     public function handle(): void
     {
         $databases = [
-            env('DB_DATABASE'),
-            env('CMS_DB_DATABASE'),
-            env('USER_ADMIN_DB_DATABASE'),
-            env('ANALYTICS_DB_DATABASE'),
+            'lar_pagss',
+            'lar_pagss_users',
+            'lar_pagss_cms',
+            'lar_pagss_analytics',
         ];
 
         foreach ($databases as $database) {
-            if (!$database) {
-                $this->error('Database name is not set in .env');
-                continue;
-            }
+//            if (!$database) {
+//                $this->error('Database name is not set in .env');
+//                continue;
+//            }
 
             try {
                 DB::statement("CREATE DATABASE IF NOT EXISTS `$database`");
