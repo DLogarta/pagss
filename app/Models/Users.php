@@ -3,14 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
 class Users extends Model
 {
+    use HasFactory, Notifiable;
+
     protected $connection = 'user_admin';
 
     protected $table = 'users';
 
     protected $fillable = ['id_number', 'name', 'pfp', 'position', 'email', 'password'];
+
+    protected $hidden = ['password'];
 
     public function roles()
     {
