@@ -7,13 +7,13 @@
             ->join('permissions', 'role_permissions.permission_id', '=', 'permissions.id')
             ->where('users.id', $user->id)
             ->selectRaw('
-                users.id, 
-                users.id_number, 
-                users.name, 
-                users.pfp, 
+                users.id,
+                users.id_number,
+                users.name,
+                users.pfp,
                 users.position,
                 users.first_login,
-                users.email, 
+                users.email,
                 GROUP_CONCAT(permissions.pages) AS pages
             ')
             ->groupBy('users.id', 'users.id_number', 'users.name', 'users.pfp', 'users.position', 'users.first_login', 'users.email')
@@ -73,7 +73,7 @@
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
-            
+
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
@@ -158,7 +158,7 @@
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    
+
                     <!-- IT & Support -->
                     <li class="nav-header">IT & Support</li>
                     <li class="nav-item">
@@ -341,7 +341,7 @@
         </div>
         <!-- /.sidebar -->
     </aside>
-    
+
     @if($user->first_login == "1")
     <div class="modal-backdrop" id="modalBackdrop" style="display: block; opacity: 0.5"></div>
         <div class="modal" id="editClientModal" style="display: block; opacity: 1;">
@@ -354,9 +354,10 @@
                         </div>
                         <div class="modal-body">
                                 <input class="form-control" name="id" value="{{ $user->id }}" hidden required>
+                                <input class="form-control" name="name" value="{{ $user->name }}" hidden required>
 
                                 <p>You need to update your password because this is the first time you are logging in.</p>
-                                
+
                                 <label for="name">Current Password:</label>
                                 <input class="form-control" type="password" name="current_password" required>
 

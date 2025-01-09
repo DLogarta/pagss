@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         Users::factory()->create([
             'id_number' => 'A10272',
             'name' => 'Daniel Logarta',
+            'pfp' => 'pagss_default_user.jpg',
             'position' => 'IT Assistant/Developer',
             'email' => 'danielogarta09@gmail.com',
             'password' => bcrypt('danielogarta09'),
