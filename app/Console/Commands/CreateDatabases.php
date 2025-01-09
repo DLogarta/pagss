@@ -7,25 +7,30 @@ use Illuminate\Support\Facades\DB;
 
 class CreateDatabases extends Command
 {
-    protected $signature = 'db:create-db';
+    protected $signature = 'db:create-multiple';
 
-    protected $description = 'Create multiple predefined databases';
+    protected $description = 'Create multiple databases based on the configuration';
 
     public function handle(): void
     {
         $databases = [
-            'lar_pagss',
-            'lar_pagss_users',
-            'lar_pagss_cms',
-            'lar_pagss_analytics',
+            env('DB_DATABASE'),
+            env('CMS_DB_DATABASE'),
+            env('USER_ADMIN_DB_DATABASE'),
+            env('ANALYTICS_DB_DATABASE'),
         ];
 
-        foreach ($databases as $dbName) {
+        foreach ($databases as $database) {
+            if (!$database) {
+                $this->error('Database name is not set in .env');
+                continue;
+            }
+
             try {
-                DB::statement("CREATE DATABASE IF NOT EXISTS `$dbName`");
-                $this->info("Database '$dbName' created successfully!");
+                DB::statement("CREATE DATABASE IF NOT EXISTS `$database`");
+                $this->info("Database '$database' created successfully!");
             } catch (\Exception $e) {
-                $this->error("Error creating database '$dbName': " . $e->getMessage());
+                $this->error("Error creating database '$database': " . $e->getMessage());
             }
         }
     }

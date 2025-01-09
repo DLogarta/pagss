@@ -31,33 +31,31 @@ return [
 
     'connections' => [
 
+        // Default MySQL connection
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'lar_pagss'),
-            'username' => env('DB_USERNAME', 'root'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => env('DB_CHARSET', 'utf8mb4'),
-            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
-            'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
         ],
 
+        // CMS database connection
         'cms' => [
             'driver' => 'mysql',
             'host' => env('CMS_DB_HOST', '127.0.0.1'),
             'port' => env('CMS_DB_PORT', '3306'),
-            'database' => env('CMS_DB_DATABASE', 'lar_pagss_cms'),
-            'username' => env('CMS_DB_USERNAME', 'root'),
+            'database' => env('CMS_DB_DATABASE', 'forge'),
+            'username' => env('CMS_DB_USERNAME', 'forge'),
             'password' => env('CMS_DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
@@ -65,13 +63,15 @@ return [
             'engine' => null,
         ],
 
+        // User Admin database connection
         'user_admin' => [
             'driver' => 'mysql',
             'host' => env('USER_ADMIN_DB_HOST', '127.0.0.1'),
             'port' => env('USER_ADMIN_DB_PORT', '3306'),
-            'database' => env('USER_ADMIN_DB_DATABASE', 'lar_pagss_users'),
-            'username' => env('USER_ADMIN_DB_USERNAME', 'root'),
+            'database' => env('USER_ADMIN_DB_DATABASE', 'forge'),
+            'username' => env('USER_ADMIN_DB_USERNAME', 'forge'),
             'password' => env('USER_ADMIN_DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
@@ -79,13 +79,15 @@ return [
             'engine' => null,
         ],
 
+        // Analytics database connection
         'analytics' => [
             'driver' => 'mysql',
             'host' => env('ANALYTICS_DB_HOST', '127.0.0.1'),
-            'port' => env('ANAYLTICS_DB_PORT', '3306'),
-            'database' => env('ANAYLTICS_DB_DATABASE', 'lar_pagss_analytics'),
-            'username' => env('ANAYLTICS_DB_USERNAME', 'root'),
-            'password' => env('ANAYLTICS_DB_PASSWORD', ''),
+            'port' => env('ANALYTICS_DB_PORT', '3306'),
+            'database' => env('ANALYTICS_DB_DATABASE', 'forge'),
+            'username' => env('ANALYTICS_DB_USERNAME', 'forge'),
+            'password' => env('ANALYTICS_DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
@@ -94,6 +96,7 @@ return [
         ],
 
     ],
+
 
     /*
     |--------------------------------------------------------------------------
