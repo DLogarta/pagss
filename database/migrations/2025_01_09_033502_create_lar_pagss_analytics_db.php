@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
-                ->on('user_admin.users')
+                ->on(config('database.connections.user_admin.database') . '.users')
                 ->onDelete('cascade');
         });
     }
