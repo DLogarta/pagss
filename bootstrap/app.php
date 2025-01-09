@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias(['checkPage' => CheckPageAccess::class]);
         $middleware->trustProxies(at: '*');
     })
+    ->withCommands([
+        __DIR__.'/../app/Domain/Orders/Commands',
+    ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
