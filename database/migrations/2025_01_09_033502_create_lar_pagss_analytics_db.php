@@ -2,11 +2,12 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public $connection = 'cms';
+    public $connection = 'analytics';
     public function up(): void
     {
         Schema::create('user_activity_logs', function (Blueprint $table) {
@@ -19,9 +20,11 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
-                ->on('lar_pagss_users.users')
+                ->on('users')
                 ->onDelete('cascade');
         });
+
+        DB::statement("ALTER TABLE user_activity_logs ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES lar_pagss_users.users(id) ON DELETE CASCADE");
     }
 
     /**
