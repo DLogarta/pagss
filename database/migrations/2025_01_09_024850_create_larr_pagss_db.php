@@ -3,29 +3,19 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use \Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-
+    public $connection = 'mysql';
     public function up(): void
     {
-        // Create the database if it does not exist
-        $databaseName = 'lar_pagss';
-        DB::statement("CREATE DATABASE IF NOT EXISTS $databaseName");
-
-        // Switch to the new database connection (optional)
-        config(['database.connections.mysql.database' => $databaseName]);
-        DB::purge('mysql');
-        DB::reconnect('mysql');
-
-        Schema::connection('mysql')->create('password_reset_tokens', function (Blueprint $table) {
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::connection('mysql')->create('sessions', function (Blueprint $table) {
+        Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
@@ -34,19 +24,19 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-        Schema::connection('mysql')->create('cache', function (Blueprint $table) {
+        Schema::create('cache', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
             $table->integer('expiration');
         });
 
-        Schema::connection('mysql')->create('cache_locks', function (Blueprint $table) {
+        Schema::create('cache_locks', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->string('owner');
             $table->integer('expiration');
         });
 
-        Schema::connection('mysql')->create('jobs', function (Blueprint $table) {
+        Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->string('queue')->index();
             $table->longText('payload');
@@ -56,7 +46,7 @@ return new class extends Migration
             $table->unsignedInteger('created_at');
         });
 
-        Schema::connection('mysql')->connection('mysql')->create('job_batches', function (Blueprint $table) {
+        Schema::create('job_batches', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('name');
             $table->integer('total_jobs');
@@ -69,7 +59,7 @@ return new class extends Migration
             $table->integer('finished_at')->nullable();
         });
 
-        Schema::connection('mysql')->create('failed_jobs', function (Blueprint $table) {
+        Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
             $table->text('connection');
@@ -83,12 +73,12 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::connection('mysql')->dropIfExists('password_reset_tokens');
-        Schema::connection('mysql')->dropIfExists('sessions');
-        Schema::connection('mysql')->dropIfExists('cache');
-        Schema::connection('mysql')->dropIfExists('cache_locks');
-        Schema::connection('mysql')->dropIfExists('jobs');
-        Schema::connection('mysql')->dropIfExists('job_batches');
-        Schema::connection('mysql')->dropIfExists('failed_jobs');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('cache');
+        Schema::dropIfExists('cache_locks');
+        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('job_batches');
+        Schema::dropIfExists('failed_jobs');
     }
 };
