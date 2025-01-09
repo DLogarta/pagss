@@ -6,11 +6,11 @@ use App\Models\Permissions;
 use App\Models\RolePermissions;
 use App\Models\Roles;
 use App\Models\UserRoles;
+use App\Models\Users;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Users;
 
-class UsersSeeder extends Seeder
+class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
