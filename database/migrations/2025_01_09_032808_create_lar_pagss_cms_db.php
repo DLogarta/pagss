@@ -7,20 +7,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public $connection = 'cms';
     public function up(): void
     {
+        // Create the database if it does not exist
         $databaseName = 'lar_pagss_cms';
         DB::statement("CREATE DATABASE IF NOT EXISTS $databaseName");
 
-        Schema::create('clients', function (Blueprint $table) {
+        // Switch to the new database connection (optional)
+        config(['database.connections.cms.database' => $databaseName]);
+        DB::purge('cms');
+        DB::reconnect('cms');
+
+        Schema::connection('cms')->create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('image', 535);
             $table->timestamps();
         });
 
-        Schema::create('organizations', function (Blueprint $table) {
+        Schema::connection('cms')->create('organizations', function (Blueprint $table) {
             $table->id();
             $table->string('image', 535);
             $table->string('name');
@@ -35,7 +40,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
-        Schema::dropIfExists('organizations');
+        Schema::connection('cms')->dropIfExists('clients');
+        Schema::connection('cms')->dropIfExists('organizations');
     }
 };

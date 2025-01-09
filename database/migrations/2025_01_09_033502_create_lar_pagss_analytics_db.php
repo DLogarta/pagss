@@ -7,13 +7,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public $connection = 'cms';
     public function up(): void
     {
         $databaseName = 'lar_pagss_analytics';
         DB::statement("CREATE DATABASE IF NOT EXISTS $databaseName");
 
-        Schema::create('user_activity_logs', function (Blueprint $table) {
+        // Switch to the new database connection (optional)
+        config(['database.connections.analytics.database' => $databaseName]);
+        DB::purge('analytics');
+        DB::reconnect('analytics');
+
+        Schema::connection('analytics')->create('user_activity_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id');
             $table->string('activity_type');
