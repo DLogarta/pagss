@@ -39,7 +39,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -76,14 +76,21 @@
             order: [[0, 'desc']],
             columns: [
                 { data: 'id', className: 'align-middle text-capitalize' },
-                { 
-                    data: 'created_at', 
-                    className: 'align-middle text-capitalize', 
+                {
+                    data: 'created_at',
+                    className: 'align-middle text-capitalize',
                     render: function(data, type, row) {
                         if (data) {
-                            // Format the date using JavaScript
-                            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                            return new Date(data).toLocaleDateString('en-US', options); // Change locale as needed
+                            const options = {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true // 12-hour format (AM/PM)
+                            };
+                            return new Date(data).toLocaleString('en-US', options);
                         }
                         return 'N/A'; // Fallback for null or invalid date
                     }

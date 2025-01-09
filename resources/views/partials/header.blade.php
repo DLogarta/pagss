@@ -49,7 +49,7 @@
     <!-- BS Duallistbox -->
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css') }}">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed text-sm">
 <div class="wrapper">
 
     <!-- Preloader -->
@@ -64,10 +64,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
+                <a href="/dashboard" class="nav-link">Home</a>
             </li>
         </ul>
 
@@ -118,7 +115,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="dashboard" class="brand-link">
+        <a href="dashboard" class="brand-link" style="transition:none!important">
             <img src="{{ asset('/img/PAGSSLogo.ico') }}" alt="PAGSS Logo" class="brand-image img-circle" style="opacity: .8;margin-left: 0rem">
             <span class="brand-text font-weight-light">PAGSS</span>
         </a>
@@ -153,7 +150,7 @@
                     <!-- Add icons to the links using the .nav-icon class
                         with font-awesome or any other icon font library -->
                     <li class="nav-item">
-                        <a href="dashboard" class="nav-link">
+                        <a href="dashboard" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Dashboard</p>
                         </a>
@@ -244,8 +241,8 @@
                     @if(canAccess('user-management') || canAccess('role-management') || canAccess('permission-management') || canAccess('user-activity-reports') || canAccess('content-engagement-metrics'))
                         <li class="nav-header">Admin Panel</li>
                         @if(canAccess('user-management') || canAccess('role-management') || canAccess('permission-management'))
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
+                            <li class="nav-item {{ request()->is('user-management') || request()->is('role-management') || request()->is('permission-management') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link {{ request()->is('user-management') || request()->is('role-management') || request()->is('permission-management') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p>User Management
                                         <i class="fas fa-angle-left right"></i>
@@ -254,7 +251,7 @@
                                 <ul class="nav nav-treeview">
                                     @canAccess('user-management')
                                     <li class="nav-item">
-                                        <a href="user-management" class="nav-link">
+                                        <a href="user-management" class="nav-link {{ request()->is('user-management') ? 'active' : '' }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Users</p>
                                         </a>
@@ -262,7 +259,7 @@
                                     @endcanAccess
                                     @canAccess('role-management')
                                     <li class="nav-item">
-                                        <a href="role-management" class="nav-link">
+                                        <a href="role-management" class="nav-link {{ request()->is('role-management') ? 'active' : '' }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Roles</p>
                                         </a>
@@ -270,7 +267,7 @@
                                     @endcanAccess
                                     @canAccess('permission-management')
                                     <li class="nav-item">
-                                        <a href="permission-management" class="nav-link">
+                                        <a href="permission-management" class="nav-link {{ request()->is('permission-management') ? 'active' : '' }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Permissions</p>
                                         </a>
@@ -280,8 +277,8 @@
                             </li>
                         @endif
                         @if(canAccess('user-activity-reports') || canAccess('content-engagement-metrics'))
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
+                            <li class="nav-item {{ request()->is('user-activity-reports') || request()->is('content-engagement-metrics') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link {{ request()->is('user-activity-reports') || request()->is('content-engagement-metrics') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-chart-bar"></i>
                                     <p>User Analytics
                                         <i class="fas fa-angle-left right"></i>
@@ -290,14 +287,14 @@
                                 <ul class="nav nav-treeview">
                                     @canAccess('user-activity-reports')
                                     <li class="nav-item">
-                                        <a href="user-activity-reports" class="nav-link">
+                                        <a href="user-activity-reports" class="nav-link {{ request()->is('user-activity-reports') ? 'active' : '' }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>User Activity Reports</p>
                                         </a>
                                     </li>
                                     @endcanAccess
                                     <li class="nav-item">
-                                        <a href="" class="nav-link">
+                                        <a href="content-engagement-metrics" class="nav-link {{ request()->is('content-engagement-metrics') ? 'active' : '' }}">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Content Engagement Metrics</p>
                                         </a>
@@ -312,7 +309,7 @@
                         <li class="nav-header">Content Moderation</li>
                         @canAccess('c-about-us')
                         <li class="nav-item">
-                            <a href="c-about-us" class="nav-link">
+                            <a href="c-about-us" class="nav-link {{ request()->is('c-about-us') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-question"></i>
                                 <p>About Us</p>
                             </a>
@@ -320,7 +317,7 @@
                         @endcanAccess
                         @canAccess('c-people')
                         <li class="nav-item">
-                            <a href="c-people" class="nav-link">
+                            <a href="c-people" class="nav-link {{ request()->is('c-people') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>People</p>
                             </a>
@@ -328,7 +325,7 @@
                         @endcanAccess
                         @canAccess('c-clients')
                         <li class="nav-item">
-                            <a href="c-clients" class="nav-link">
+                            <a href="c-clients" class="nav-link {{ request()->is('c-clients') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-handshake"></i>
                                 <p>Clients</p>
                             </a>
