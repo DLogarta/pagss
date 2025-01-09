@@ -22,7 +22,7 @@ class CreateDatabases extends Command
 
         foreach ($databases as $dbName) {
             try {
-                DB::statement("CREATE DATABASE IF NOT EXISTS `$dbName`");
+                DB::connection('mysql')->statement("CREATE DATABASE IF NOT EXISTS `$dbName`");
                 $this->info("Database '$dbName' created successfully!");
             } catch (\Exception $e) {
                 $this->error("Error creating database '$dbName': " . $e->getMessage());
