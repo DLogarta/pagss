@@ -3,12 +3,16 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use \Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
     public $connection = 'mysql';
     public function up(): void
     {
+        $databaseName = 'lar_pagss';
+        DB::statement("CREATE DATABASE IF NOT EXISTS $databaseName");
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');

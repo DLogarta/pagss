@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -9,6 +10,9 @@ return new class extends Migration
     public $connection = 'cms';
     public function up(): void
     {
+        $databaseName = 'lar_pagss_cms';
+        DB::statement("CREATE DATABASE IF NOT EXISTS $databaseName");
+
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
