@@ -159,7 +159,7 @@
                     <!-- IT & Support -->
                     <li class="nav-header">IT & Support</li>
                     <li class="nav-item">
-                        <a href="dashboard" class="nav-link">
+                        <a href="it-helpdesk" class="nav-link {{ request()->is('it-helpdesk') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-headset"></i>
                             <p>IT Helpdesk</p>
                         </a>

@@ -93,6 +93,20 @@ return [
             'engine' => null,
         ],
 
+        'helpdesk' => [
+            'driver' => 'mysql',
+            'host' => env('HELPDESK_DB_HOST', '127.0.0.1'),
+            'port' => env('HELPDESK_DB_PORT', '3306'),
+            'database' =>  env('HELPDESK_DB_DATABASE', 'lar_pagss_helpdesk'),
+            'username' => env('HELPDESK_DB_USERNAME', 'root'),
+            'password' => env('HELPDESK_DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
     ],
 
     /*

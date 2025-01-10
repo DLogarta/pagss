@@ -36,7 +36,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -121,10 +121,10 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="t-it-and-support" role="tabpanel" aria-labelledby="t-it-and-support-tab">
-                                            <!-- <div class="mb-2">
-                                                <input type="checkbox" id="" name="permissions[]" value="">
+                                            <div class="mb-2">
+                                                <input type="checkbox" id="" name="permissions[]" value="it-helpdesk">
                                                 <label for="">IT Helpdesk</label>
-                                            </div> -->
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade" id="t-content-moderation" role="tabpanel" aria-labelledby="t-content-moderation-tab">
                                             <div class="mb-2">
@@ -223,10 +223,10 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="t-it-and-support-edit" role="tabpanel" aria-labelledby="t-it-and-support-tab-edit">
-                                            <!-- <div class="mb-2">
-                                                <input type="checkbox" id="" name="permissions[]" value="">
+                                            <div class="mb-2">
+                                                <input type="checkbox" id="" name="permissions[]" value="it-helpdesk">
                                                 <label for="">IT Helpdesk</label>
-                                            </div> -->
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade" id="t-content-moderation-edit" role="tabpanel" aria-labelledby="t-content-moderation-tab-edit">
                                             <div class="mb-2">
@@ -276,22 +276,22 @@
             columns: [
                 { data: 'name', className: 'align-middle text-capitalize' },
                 { data: 'description', className: 'align-middle text-capitalize' },
-                { 
-                    data: 'pages', 
-                    className: 'align-middle', 
+                {
+                    data: 'pages',
+                    className: 'align-middle',
                     render: function(data) {
                         if (Array.isArray(data)) {
                             return data.join(', ');
                         }
                         return data; // Fallback for unexpected data
-                    } 
+                    }
                 },
                 {
                     data: 'id',
                     render: function (data, type, row) {
                         return `
                             <div class="d-flex">
-                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#editPermissionModal" 
+                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#editPermissionModal"
                                         data-id="${data}" data-name="${row.name}" data-description="${row.description}" data-pages="${row.pages}">
                                         <i class="fas fa-pencil-alt"></i>
                                 </button>

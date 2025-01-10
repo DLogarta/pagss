@@ -20,3 +20,6 @@ require __DIR__.'/destination/content-moderation/content-moderation.php';
 
 //Content Moderation Functions
 require __DIR__.'/destination/content-moderation/content-moderation-functions.php';
+
+//IT and Support Routes
+require __DIR__.'/destination/itsupport/itsupport.php';
