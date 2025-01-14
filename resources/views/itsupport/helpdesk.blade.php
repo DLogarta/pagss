@@ -30,6 +30,7 @@
                                             <th class="text-capitalize">Name</th>
                                             <th class="text-capitalize">Concern</th>
                                             <th class="text-capitalize">Priority Level</th>
+                                            <th class="text-capitalize">Created At</th>
                                             <th class="text-capitalize">Status</th>
                                             <th></th>
                                         </tr>
@@ -43,6 +44,7 @@
                                             <th class="text-capitalize">Name</th>
                                             <th class="text-capitalize">Concern</th>
                                             <th class="text-capitalize">Priority Level</th>
+                                            <th class="text-capitalize">Created At</th>
                                             <th class="text-capitalize">Status</th>
                                             <th></th>
                                         </tr>
@@ -95,8 +97,22 @@
                                     <input class="form-control mb-2" type="text" id="edit-email" name="email" required disabled>
                                 </div>
                             </div>
-
-                            <label>Access/Permission</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Description:</label>
+                                    <textarea class="form-control mb-2" style="height:250px" id="edit-description" name="description" required disabled></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Photo/Images:</label>
+                                    <div id="report" class="owl-carousel">
+                                        <div class="item">
+                                            <center>
+                                                <img style="height:250px; width:auto!important;" src="{{ asset('/img/awards/ANA-032021.jpg') }}">
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -152,6 +168,29 @@
                                 break;
                         }
                         return `<span class="badge ${badgeClass}">${data}</span>`
+                    }
+                },
+                {
+                    data: 'created_at',
+                    className: 'align-middle text-capitalize',
+                    render: function(data, type, row) {
+                        if (data) {
+                            const date = new Date(data);
+
+                            const options = { month: 'long' };
+                            const month = new Intl.DateTimeFormat('en-US', options).format(date);
+                            const day = date.getDate();
+                            const year = date.getFullYear();
+
+                            const hours = date.getHours();
+                            const minutes = date.getMinutes().toString().padStart(2, '0');
+                            const seconds = date.getSeconds().toString().padStart(2, '0');
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            const formattedHour = (hours % 12 || 12);
+
+                            return `${month} ${day}, ${year} | ${formattedHour}:${minutes}:${seconds} ${ampm}`;
+                        }
+                        return 'N/A';
                     }
                 },
                 {
@@ -289,5 +328,18 @@
         $('#edit-id_number').val(id_number);
         $('#edit-phone').val(phone);
         $('#edit-email').val(email);
+        $('#edit-description').val(description);
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#report").owlCarousel({
+            loop: true,
+            margin: 10,
+            center: true,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            items: 1,
+        });
     });
 </script>

@@ -81,18 +81,22 @@
                     className: 'align-middle text-capitalize',
                     render: function(data, type, row) {
                         if (data) {
-                            const options = {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit',
-                                hour12: true // 12-hour format (AM/PM)
-                            };
-                            return new Date(data).toLocaleString('en-US', options);
+                            const date = new Date(data);
+
+                            const options = { month: 'long' };
+                            const month = new Intl.DateTimeFormat('en-US', options).format(date);
+                            const day = date.getDate();
+                            const year = date.getFullYear();
+
+                            const hours = date.getHours();
+                            const minutes = date.getMinutes().toString().padStart(2, '0');
+                            const seconds = date.getSeconds().toString().padStart(2, '0');
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            const formattedHour = (hours % 12 || 12);
+
+                            return `${month} ${day}, ${year} | ${formattedHour}:${minutes}:${seconds} ${ampm}`;
                         }
-                        return 'N/A'; // Fallback for null or invalid date
+                        return 'N/A';
                     }
                 },
                 {

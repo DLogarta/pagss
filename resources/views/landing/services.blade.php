@@ -1,8 +1,8 @@
-@include('partials.landing.header') 
+@include('partials.landing.header')
     <div class="content-wrapper">
         <section id="1" class="hero screen-height image">
             <img class="hero-image" src="{{ asset('/img/services%20(1).jpg') }}">
-            @include('partials.landing.sidenav') 
+            @include('partials.landing.sidenav')
             <div class="page-info">
                 <h1>operations</h1>
             </div>
@@ -31,4 +31,4 @@
                 </div>
             </div>
         </section>
-@include('partials.landing.footer') 
+@include('partials.landing.footer')

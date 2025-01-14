@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Organization;
 use App\Models\Clients;
+use App\Http\Controllers\HelpdeskController;
 
 Route::get('/', function () {
     return view('landing/index');
@@ -47,3 +48,11 @@ Route::get('careers', function () {
 Route::get('contact', function () {
     return view('landing/contact');
 });
+
+Route::get('report', function () {
+    return view('landing/report');
+});
+
+Route::post('report/add-img', [HelpdeskController::class, 'add_img']);
+
+Route::post('report/remove-img', [HelpdeskController::class, 'remove_img']);

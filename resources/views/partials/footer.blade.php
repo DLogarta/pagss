@@ -45,8 +45,13 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('/js/pages/dashboard2.js') }}"></script>
 
+<!-- Carousel JS -->
+<script src="{{ asset('/js/owl.carousel.js') }}"></script>
+<script src="{{ asset('/js/owl.carousel.min.js') }}"></script>
+
 <!-- BS Duallistbox -->
 <script src="{{ asset('/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
+
 </body>
 </html>
 <script>

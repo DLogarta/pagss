@@ -48,6 +48,13 @@
     <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <!-- BS Duallistbox -->
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css') }}">
+    <!-- Owl CSS -->
+    <link rel="stylesheet" href="{{ asset('/css/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/owl.theme.default.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/owl.theme.green.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/owl.theme.green.min.css') }}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed text-sm">
 <div class="wrapper">

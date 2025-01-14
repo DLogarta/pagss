@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('/css/owl.theme.green.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/owl.theme.green.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('/plugins/dropzone/min/dropzone.min.css') }}">
 </head>
 
 <body>

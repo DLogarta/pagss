@@ -61,6 +61,7 @@
     <script src="{{ asset('/js/owl.carousel.js') }}"></script>
     <script src="{{ asset('/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('/js/scroll-btn.js') }}"></script>
+    <script src="{{ asset('/plugins/dropzone/min/dropzone.min.js') }}"></script>
 </body>
 
 </html>
