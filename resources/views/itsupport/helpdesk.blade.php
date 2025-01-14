@@ -55,32 +55,55 @@
             </div>
         </section>
 
-        <div class="modal fade" id="editUserModal">
-            <div class="modal-dialog">
+        <div class="modal fade" id="viewTicket">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
-                    <form action="/user-management/update" method="POST">
+                    <form action="/it-helpdesk/update" method="POST">
                         @csrf
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit User Information</h4>
+                            <h4 class="modal-title"><span class="text-uppercase" id="ticket-id">Ticket #</span> | <span class="text-capitalize" id="reporter-name">Name</span></h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <input class="form-control" id="edit-id" name="id" hidden required>
-                            <label class="mb-0" for="name">ID Number:</label>
-                            <input class="text-uppercase form-control mb-2" type="text" id="edit-id_number" name="id_number" required>
-                            <label class="mb-0" for="name">Name:</label>
-                            <input class="text-capitalize form-control mb-2" type="text" id="edit-name" name="name" required>
-                            <label class="mb-0" for="name">Position:</label>
-                            <input class="text-capitalize form-control mb-2" type="text" id="edit-position" name="position" required>
-                            <label class="mb-0" for="name">Email:</label>
-                            <input class="form-control mb-2" type="text" id="edit-email" name="email" required>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="mb-0">Ticket Number:</label>
+                                    <input class="text-uppercase form-control mb-2" type="text" id="edit-ticket_number" name="id" required disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="mb-0">Concern:</label>
+                                    <input class="text-capitalize form-control mb-2" type="text" id="edit-subject" name="subject" required disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="mb-0">Reporter Name:</label>
+                                    <input class="text-capitalize form-control mb-2" type="text" id="edit-name" name="name" required disabled>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">Employee ID Number:</label>
+                                    <input class="text-uppercase form-control mb-2" type="text" id="edit-id_number" name="id_number" required disabled>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">Phone:</label>
+                                    <input class="form-control mb-2" type="text" id="edit-phone" name="phone" required disabled>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">Email:</label>
+                                    <input class="form-control mb-2" type="text" id="edit-email" name="email" required disabled>
+                                </div>
+                            </div>
+
                             <label>Access/Permission</label>
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <div>
+                                <button type="submit" name="action" value="mark_fake" class="btn btn-danger">Mark as Fake</button>
+                                <button type="submit" name="action" value="respond" class="btn btn-primary">Respond</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -135,24 +158,30 @@
                     data: 'status',
                     render: function (data, type, row) {
                         let badgeClass = '';
+                        let badgeContent = '';
                         switch (data) {
                             case 'Ongoing':
                                 badgeClass = 'badge-info';
+                                badgeContent = `Ongoing: Assigned to ${row.responder}`
                                 break;
                             case 'Resolved':
                                 badgeClass = 'badge-success';
+                                badgeContent = `Resolved: Resolved by ${row.responder}`
                                 break;
                             case 'Pending':
                                 badgeClass = 'badge-warning';
+                                badgeContent = `Pending`
                                 break;
                             case 'Fake':
                                 badgeClass = 'badge-danger';
+                                badgeContent = `Fake: Tagged by ${row.responder}`
                                 break;
                             default:
-                                badgeClass = 'badge-secondary';
+                                badgeClass = 'badge-warning';
+                                badgeContent = `Pending`;
                                 break;
                         }
-                        return `<span class="badge ${badgeClass}">${data}</span>`
+                        return `<span class="badge ${badgeClass}">${badgeContent}</span>`
                     }
                 },
                 {
@@ -160,11 +189,12 @@
                     render: function (data, type, row) {
                         return `
                             <div class="d-flex">
-                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#editUserModal"
-                                        data-id="${data}">
-                                        <i class="fas fa-eye"></i>
+                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#viewTicket"
+                                        data-id="${data}" data-name="${row.name}" data-id_number="${row.id_number}" data-phone="${row.phone}" data-email="${row.email}" data-subject="${row.subject}" data-description="${row.description}" data-priority_level="${row.priority_level}" data-status="${row.status}" data-attachments="${row.attachments}" data-assigned_to="${row.assigned_to}" data-created="${row.created_at}">
+                                    <i class="fas fa-eye"></i>
                                 </button>
-                            </div>`;
+                            </div>
+                        `;
                     }
                 }
             ]
@@ -234,48 +264,30 @@
     });
 
 </script>
-{{--<script>--}}
-{{--    // Populate the modal with data from the clicked button--}}
-{{--    $('#editUserModal').on('show.bs.modal', function (event) {--}}
-{{--        const button = $(event.relatedTarget);--}}
-{{--        const id = button.data('id');--}}
-{{--        const id_number = button.data('idnumber');--}}
-{{--        const name = button.data('name');--}}
-{{--        const position = button.data('position');--}}
-{{--        const email = button.data('email');--}}
+<script>
+    // Populate the modal with data from the clicked button
+    $('#viewTicket').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const id = button.data('id');
+        const name = button.data('name');
+        const id_number = button.data('id_number');
+        const phone = button.data('phone');
+        const email = button.data('email');
+        const subject = button.data('subject');
+        const description = button.data('description');
+        const priority_level = button.data('priority_level');
+        const status = button.data('status');
+        const attachments = button.data('attachments');
+        const assigned_to = button.data('assigned_to');
+        const created_at = button.data('created_at');
 
-{{--        $('#edit-id').val(id);--}}
-{{--        $('#edit-id_number').val(id_number);--}}
-{{--        $('#edit-name').val(name);--}}
-{{--        $('#edit-position').val(position);--}}
-{{--        $('#edit-email').val(email);--}}
-{{--        const rolesData = button.data('rolesid');--}}
-{{--        const con_rolesData = rolesData.toString();--}}
-{{--        const rolesArray = con_rolesData.split(',').map(id => parseInt(id.trim()));--}}
-{{--        var roles = @json($roles); // Passing the roles data from Blade--}}
-
-{{--        $(document).ready(function() {--}}
-{{--            $('#roles').bootstrapDualListbox({--}}
-{{--                nonSelectedListLabel: 'Available Roles',--}}
-{{--                selectedListLabel: 'Selected Roles'--}}
-{{--            });--}}
-
-{{--            // Clear existing options and then append new ones--}}
-{{--            $('#roles').empty(); // Clear existing options--}}
-
-{{--            var options = '';--}}
-{{--            roles.forEach(function(role) {--}}
-{{--                if (rolesArray.includes(role.id)) {--}}
-{{--                    options += `<option value="${role.id}" selected>${role.name}</option>`;--}}
-{{--                } else {--}}
-{{--                    options += `<option value="${role.id}">${role.name}</option>`;--}}
-{{--                }--}}
-{{--            });--}}
-
-{{--            $('#roles').append(options);--}}
-
-{{--            // Refresh the Dual List Box--}}
-{{--            $('#roles').bootstrapDualListbox('refresh');--}}
-{{--        });--}}
-{{--    });--}}
-{{--</script>--}}
+        $('#ticket-id').text(id);
+        $('#edit-subject').val(subject);
+        $('#reporter-name').text(name);
+        $('#edit-ticket_number').val(id);
+        $('#edit-name').val(name);
+        $('#edit-id_number').val(id_number);
+        $('#edit-phone').val(phone);
+        $('#edit-email').val(email);
+    });
+</script>

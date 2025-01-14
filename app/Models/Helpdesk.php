@@ -15,6 +15,11 @@ class Helpdesk extends Model
 
     public $incrementing = false;
 
+    public function users()
+    {
+        return $this->belongsTo(Users::class, 'assigned_to', 'id');
+    }
+
     public static function boot()
     {
         parent::boot();

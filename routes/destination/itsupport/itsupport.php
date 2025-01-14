@@ -11,6 +11,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('it-helpdesk/data', function(){
        $tickets = Helpdesk::query();
-       return Datatables::of($tickets)->make(true);
+       return Datatables::of($tickets)
+       ->addColumn('responder', function($ticket){
+           return $ticket->users ? $ticket->user->name : 'None';
+       })
+       ->make(true);
     })->middleware('checkPage:it-helpdesk');
 });
