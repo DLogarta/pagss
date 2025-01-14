@@ -46,7 +46,8 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1,
         ]);
 
-        DB::table('u828233268_pagss_cms.clients')->insert([
+        DB::connection('cms')
+            ->table('u828233268_pagss_cms.clients')->insert([
             ['id' => '1','name' => 'Content Moderation','image' => 'Air_Asia-logo-5ACDC17858-seeklogo.com_.png','created_at' => '2024-12-16 21:24:34','updated_at' => '2025-01-03 05:24:45'],
             ['id' => '2','name' => 'air china','image' => 'AIR-CHINAAIR-CHINA_logospng.png','created_at' => '2024-12-16 21:24:34','updated_at' => '2024-12-16 21:24:34'],
             ['id' => '3','name' => 'air hongkong','image' => 'Air-Hong-Kong-LogoAir-Hong-Kong-Logo_logospng.png','created_at' => '2024-12-16 21:24:34','updated_at' => '2024-12-16 21:24:34'],
@@ -107,7 +108,8 @@ class DatabaseSeeder extends Seeder
             ['id' => '58','name' => 'ytok express','image' => 'ytoyto_logospng.png','created_at' => '2024-12-16 21:24:34','updated_at' => '2024-12-16 21:24:34']
         ]);
 
-        DB::table('u828233268_pagss_cms.organizations')->insert([
+        DB::connection('cms')
+            ->table('u828233268_pagss_cms.organizations')->insert([
             ['id' => '1','image' => 'CorderoJanette1.jpg','name' => 'janette cordero','title' => 'president and ceo','category' => 'executive','created_at' => '2024-12-16 20:51:54','updated_at' => '2024-12-16 20:51:54'],
             ['id' => '2','image' => 'Escolar-Dickson-1.jpg','name' => 'dickson escolar','title' => 'chief operating officer','category' => 'executive','created_at' => '2024-12-16 20:51:54','updated_at' => '2024-12-16 20:51:54'],
             ['id' => '3','image' => 'Chiong-Jennifer-1.jpg','name' => 'jennifer chiong','title' => 'vice president','category' => 'executive','created_at' => '2024-12-16 20:51:54','updated_at' => '2024-12-16 20:51:54'],
