@@ -54,15 +54,15 @@
         </div>
     </section>
 </div>
-@include('partials.landing.footer')]
+@include('partials.landing.footer')
 <script>
     Dropzone.autoDiscover = false;
 
     const myDropzone = new Dropzone('#imageUpload', {
-        url: '/report/add-img', // Laravel route for handling uploads
-        maxFilesize: 2, // Maximum file size in MB
-        maxFiles: 5, // Maximum number of files
-        acceptedFiles: 'image/*', // Only accept images
+        url: '/report/add-img',
+        maxFilesize: 2,
+        maxFiles: 10,
+        acceptedFiles: 'image/*',
         addRemoveLinks: true,
         dictDefaultMessage: 'Drag and drop images here or click to upload',
         headers: {
@@ -95,6 +95,19 @@
                 previewElement.parentNode.removeChild(previewElement);
             }
         },
+        init: function () {
+            this.on('error', function (file, errorMessage) {
+                if (file.size > this.options.maxFilesize * 1024 * 1024) {
+                    alert(`File ${file.name} is too large. Maximum size is ${this.options.maxFilesize} MB.`);
+                    this.removeFile(file);
+                } else if (!file.type.match('image.*')) {
+                    alert(`File ${file.name} is not a valid image.`);
+                    this.removeFile(file);
+                } else {
+                    console.error(errorMessage);
+                }
+            });
+        },
     });
-
 </script>
+
