@@ -56,3 +56,5 @@ Route::get('report', function () {
 Route::post('report/add-img', [HelpdeskController::class, 'add_img']);
 
 Route::post('report/remove-img', [HelpdeskController::class, 'remove_img']);
+
+Route::post('report/add', [HelpdeskController::class, 'add_report']);

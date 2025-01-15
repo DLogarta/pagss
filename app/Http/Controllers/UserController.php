@@ -264,7 +264,7 @@ class UserController extends Controller
 
             return redirect('/permission-management')->with('add-success', 'Permission added successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('add-failed', "An error occured. Error: " . $e->getMessage());
+            return redirect()->back()->with('add-failed', "An error occurred. Error: " . $e->getMessage());
         }
     }
 

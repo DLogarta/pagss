@@ -306,6 +306,8 @@
 <script>
     // Populate the modal with data from the clicked button
     $('#viewTicket').on('show.bs.modal', function (event) {
+        $('#report').trigger('destroy.owl.carousel');
+
         const button = $(event.relatedTarget);
         const id = button.data('id');
         const name = button.data('name');
@@ -314,11 +316,7 @@
         const email = button.data('email');
         const subject = button.data('subject');
         const description = button.data('description');
-        const priority_level = button.data('priority_level');
-        const status = button.data('status');
         const attachments = button.data('attachments');
-        const assigned_to = button.data('assigned_to');
-        const created_at = button.data('created_at');
 
         $('#ticket-id').text(id);
         $('#edit-subject').val(subject);
@@ -329,10 +327,17 @@
         $('#edit-phone').val(phone);
         $('#edit-email').val(email);
         $('#edit-description').val(description);
-    });
-</script>
-<script>
-    $(document).ready(function(){
+        const carousel = document.getElementById('report');
+        const carouselContent = attachments.map(attachment => `
+            <div class="item">
+                <center>
+                    <img style="height:250px; width:auto!important;" src="/img/helpdesk/${attachment}" alt="${attachment}">
+                </center>
+            </div>
+        `).join(''); // Generate HTML content for each attachment
+
+        carousel.innerHTML = carouselContent;
+
         $("#report").owlCarousel({
             loop: true,
             margin: 10,

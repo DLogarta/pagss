@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Helpdesk;
 
 class HelpdeskController extends Controller
 {
@@ -27,5 +28,40 @@ class HelpdeskController extends Controller
             return response()->json(['success' => 'File deleted successfully']);
         }
         return response()->json(['error' => 'File not found'], 404);
+    }
+
+    public function add_report(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'id_number' => 'required|string|max:255',
+                'phone' => 'required|string|max:11',
+                'email' => 'required|string|max:255',
+                'subject' => 'required|string|max:255',
+                'description' => 'required|string|max:5535',
+                'priority_level' => 'required|in:Low,Medium,High,Critical',
+                'uploaded_images' => 'required|json',
+            ]);
+
+            $uploadedImages = json_decode($validatedData['uploaded_images'], true);
+
+            $report = new Helpdesk();
+            $report->name = $validatedData['name'];
+            $report->id_number = $validatedData['id_number'];
+            $report->phone = $validatedData['phone'];
+            $report->email = $validatedData['email'];
+            $report->subject = $validatedData['subject'];
+            $report->description = $validatedData['description'];
+            $report->priority_level = $validatedData['priority_level'];
+            $report->attachments = json_encode($uploadedImages);
+
+            $report->save();
+
+            return redirect('/report')->with('success', 'Report filed successfully. Please wait for a call from the IT department to confirm your identity and address your issue.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', "An error occurred. Error: " . $e->getMessage());
+        }
+
     }
 }
