@@ -24,5 +24,5 @@
 
 ## Creating Symlink for public_html from public dir
 
-1. do "pwd" to verify path
+1. go to web dir and do "pwd" to verify path
 2. do "ln -s /path/to/website/public public_html"
