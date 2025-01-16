@@ -18,6 +18,12 @@
 1. do "cp .env.production .env"
 2. do "php artisan config:cache"
 
+## Update php to 8.2 (Hostinger only!)
+
+1. do nano ~/.bashrc
+2. type "export PATH=/opt/cloudlinux/alt-php82/root/usr/bin:$PATH" and save
+3. do source ~/.bashrc
+
 ## FOR USING PHP COMMANDS IN SSH
 
 - php artisan serve
