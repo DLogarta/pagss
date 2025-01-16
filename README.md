@@ -21,3 +21,8 @@
 ## FOR USING PHP COMMANDS IN SSH
 
 - php artisan serve
+
+## Creating Symlink for public_html from public dir
+
+1. do "pwd" to verify path
+2. do "ln -s /path/to/website/public public_html"
