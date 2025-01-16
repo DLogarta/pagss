@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Helpdesk;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReportCreatedMail;
 
 class HelpdeskController extends Controller
 {
@@ -57,6 +59,17 @@ class HelpdeskController extends Controller
             $report->attachments = json_encode($uploadedImages);
 
             $report->save();
+
+            Mail::to($report->email)->send(new ReportCreatedMail(
+                $report->id,
+                $report->name,
+                $report->id_number,
+                $report->email,
+                $report->phone,
+                $report->subject,
+                $report->priority_level,
+                $report->description
+            ));
 
             return redirect('/report')->with('success', 'Report filed successfully. Please wait for a call from the IT department to confirm your identity and address your issue.');
         } catch (\Exception $e) {
