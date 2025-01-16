@@ -23,3 +23,6 @@ require __DIR__.'/destination/content-moderation/content-moderation-functions.ph
 
 //IT and Support Routes
 require __DIR__.'/destination/itsupport/itsupport.php';
+
+//IT and Support Functions
+require __DIR__.'/destination/itsupport/itsupport-functions.php';

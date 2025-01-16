@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Helpdesk;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReportCreatedMail;
+use App\Helpers\Logger;
 
 class HelpdeskController extends Controller
 {
@@ -76,5 +77,35 @@ class HelpdeskController extends Controller
             return redirect()->back()->with('error', "An error occurred. Error: " . $e->getMessage());
         }
 
+    }
+
+    public function update_report(Request $request)
+    {
+        try {
+            $button_pressed = $request->input('action');
+            if ($button_pressed == 'respond') {
+                echo "Responded";
+            } else if ($button_pressed == 'mark_fake') {
+                $validatedData = $request->validate([
+                    'id' => 'required|string|max:8',
+                ]);
+
+                $report = Helpdesk::find($validatedData['id']);
+
+                $user = session('user');
+
+                $report->status = "Fake";
+                $report->assigned_to = $user->id;
+
+                $report->save();
+
+                $logDetails = ucwords($user->name) . " marked Ticket # {$validatedData['id']} as fake";
+                Logger::logAction('Mark Report as Fake', $logDetails);
+
+                return redirect('it-helpdesk')->with('success', 'Report has been marked as Fake.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', "An error occurred. Error: " . $e->getMessage());
+        }
     }
 }

@@ -72,35 +72,35 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="mb-0">Ticket Number:</label>
-                                    <input class="text-uppercase form-control mb-2" type="text" id="edit-ticket_number" name="id" required disabled>
+                                    <input class="text-uppercase form-control mb-2" type="text" id="edit-ticket_number" name="id" required readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="mb-0">Concern:</label>
-                                    <input class="text-capitalize form-control mb-2" type="text" id="edit-subject" name="subject" required disabled>
+                                    <input class="text-capitalize form-control mb-2" type="text" id="edit-subject" name="subject" required readonly>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
                                     <label class="mb-0">Reporter Name:</label>
-                                    <input class="text-capitalize form-control mb-2" type="text" id="edit-name" name="name" required disabled>
+                                    <input class="text-capitalize form-control mb-2" type="text" id="edit-name" name="name" required readonly>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="mb-0">Employee ID Number:</label>
-                                    <input class="text-uppercase form-control mb-2" type="text" id="edit-id_number" name="id_number" required disabled>
+                                    <input class="text-uppercase form-control mb-2" type="text" id="edit-id_number" name="id_number" required readonly>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="mb-0">Phone:</label>
-                                    <input class="form-control mb-2" type="text" id="edit-phone" name="phone" required disabled>
+                                    <input class="form-control mb-2" type="text" id="edit-phone" name="phone" required readonly>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="mb-0">Email:</label>
-                                    <input class="form-control mb-2" type="text" id="edit-email" name="email" required disabled>
+                                    <input class="form-control mb-2" type="text" id="edit-email" name="email" required readonly>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Description:</label>
-                                    <textarea class="form-control mb-2" style="height:250px" id="edit-description" name="description" required disabled></textarea>
+                                    <textarea class="form-control mb-2" style="height:250px" id="edit-description" name="description" required readonly></textarea>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Photo/Images:</label>
@@ -201,11 +201,11 @@
                         switch (data) {
                             case 'Ongoing':
                                 badgeClass = 'badge-info';
-                                badgeContent = `Ongoing: Assigned to ${row.responder}`
+                                badgeContent = `Ongoing: Assigned to <span class="text-capitalize">${row.responder}</span>`
                                 break;
                             case 'Resolved':
                                 badgeClass = 'badge-success';
-                                badgeContent = `Resolved: Resolved by ${row.responder}`
+                                badgeContent = `Resolved: Resolved by <span class="text-capitalize">${row.responder}</span>`
                                 break;
                             case 'Pending':
                                 badgeClass = 'badge-warning';
@@ -213,7 +213,7 @@
                                 break;
                             case 'Fake':
                                 badgeClass = 'badge-danger';
-                                badgeContent = `Fake: Tagged by ${row.responder}`
+                                badgeContent = `Fake: Tagged by <span class="text-capitalize">${row.responder}</span>`
                                 break;
                             default:
                                 badgeClass = 'badge-warning';
