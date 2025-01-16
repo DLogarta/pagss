@@ -32,3 +32,17 @@
 
 1. go to web dir and do "pwd" to verify path
 2. do "ln -s /path/to/website/public public_html"
+
+## For complete refresh (INSTRUCTION ONLY FOR HOSTINGER)
+
+1. login to ssh
+2. go to website dir
+3. do "rm -rf *"
+4. do "git checkout main"
+5. do "git fetch origin"
+6. do "git pull origin main"
+7. do "ls" to verify
+8. do "cp .env.production .env"
+9. do "php artisan config:cache"
+10. do "pwd" and copy path
+11. do "ln -s /path/to/website/public public_html"
