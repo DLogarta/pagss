@@ -224,7 +224,7 @@
                                         </div>
                                         <div class="tab-pane fade" id="t-it-and-support-edit" role="tabpanel" aria-labelledby="t-it-and-support-tab-edit">
                                             <div class="mb-2">
-                                                <input type="checkbox" id="" name="permissions[]" value="it-helpdesk">
+                                                <input class="page-checkbox" type="checkbox" id="it-helpdesk-edit" name="permissions[]" value="it-helpdesk">
                                                 <label for="">IT Helpdesk</label>
                                             </div>
                                         </div>
