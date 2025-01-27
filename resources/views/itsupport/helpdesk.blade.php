@@ -19,10 +19,10 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title mb-0">Helpdesk Tickets</h3>
+                            </div>
                             <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5>Helpdesk Tickets</h5>
-                                </div>
                                 <table id="example3" class="table table-hover">
                                     <thead>
                                         <tr>
@@ -60,19 +60,24 @@
         <div class="modal fade" id="viewTicket">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
-                    <form action="/it-helpdesk/update" method="POST">
+                    <form action="/it-helpdesk/update" method="POST" id="helpdesk-form">
                         @csrf
+                        <input type="hidden" name="reason" id="edit-reason">
                         <div class="modal-header">
-                            <h4 class="modal-title"><span class="text-uppercase" id="ticket-id">Ticket #</span> | <span class="text-capitalize" id="reporter-name">Name</span></h4>
+                            <h5 class="modal-title"><span class="text-uppercase" id="ticket-id">Ticket #</span> | <span class="text-capitalize" id="reporter-name">Name</span></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label class="mb-0">Ticket Number:</label>
                                     <input class="text-uppercase form-control mb-2" type="text" id="edit-ticket_number" name="id" required readonly>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">Location:</label>
+                                    <input class="text-capitalize form-control mb-2" type="text" id="edit-location" name="location" required readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="mb-0">Concern:</label>
@@ -105,10 +110,8 @@
                                 <div class="col-md-6">
                                     <label>Photo/Images:</label>
                                     <div id="report" class="owl-carousel">
-                                        <div class="item">
-                                            <center>
-                                                <img style="height:250px; width:auto!important;" src="{{ asset('/img/awards/ANA-032021.jpg') }}">
-                                            </center>
+                                        <div class="item d-flex justify-content-center">
+                                            <p>No image submitted for this report.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -119,6 +122,9 @@
                             <div>
                                 <button type="submit" name="action" value="mark_fake" class="btn btn-danger">Mark as Fake</button>
                                 <button type="submit" name="action" value="respond" class="btn btn-primary">Respond</button>
+                                <button type="submit" name="action" value="undo" class="btn btn-danger">Undo</button>
+                                <button type="button" id="delete" onclick="promptDelete()" class="btn btn-danger">Delete</button>
+                                <button type="submit" name="action" value="done" class="btn btn-primary">Done</button>
                             </div>
                         </div>
                     </form>
@@ -128,117 +134,108 @@
     </div>
 @include('partials.footer')
 <script>
-    $(document).ready(function () {
-        $('#example3').DataTable({
-            processing: true, // Show processing indicator
-            serverSide: true, // Enable server-side processing
-            lengthChange: false,
-            autoWidth: false,
-            responsive: true,
-            columnDefs: [
-                { "orderable": false, "targets": -1 } // Disable sorting on the last column
-            ],
-            ajax: {
-                url: '/it-helpdesk/data',
-                type: 'GET'
-            },
-            columns: [
-                { data: 'id', className: 'align-middle text-uppercase' },
-                { data: 'name', className: 'align-middle text-capitalize' },
-                { data: 'subject', className: 'align-middle text-capitalize' },
-                {
-                    data: 'priority_level',
-                    render: function (data, type, row) {
-                        let badgeClass = '';
-                        switch (data) {
-                            case 'Low':
-                                badgeClass = 'badge-info';
-                                break;
-                            case 'Medium':
-                                badgeClass = 'badge-success';
-                                break;
-                            case 'High':
-                                badgeClass = 'badge-warning';
-                                break;
-                            case 'Critical':
-                                badgeClass = 'badge-danger';
-                                break;
-                            default:
-                                badgeClass = 'badge-secondary';
-                                break;
-                        }
-                        return `<span class="badge ${badgeClass}">${data}</span>`
+    $('#example3').DataTable({
+        processing: true,
+        serverSide: true,
+        autoWidth: false,
+        responsive: true,
+        columnDefs: [
+            { "orderable": false, "targets": -1 }, // Disable sorting on the last column
+            { width: "1%", targets: -1 }
+        ],
+        order: [[4, 'desc']], // Default sorting by the 'created_at' column (index 4) in descending order
+        ajax: {
+            url: '/it-helpdesk/data',
+            type: 'GET'
+        },
+        columns: [
+            { data: 'id', className: 'align-middle text-uppercase' },
+            { data: 'name', className: 'align-middle text-capitalize' },
+            { data: 'subject', className: 'align-middle text-capitalize' },
+            {
+                data: 'priority_level',
+                render: function (data, type, row) {
+                    let badgeClass = '';
+                    switch (data) {
+                        case 'Low': badgeClass = 'badge-info'; break;
+                        case 'Medium': badgeClass = 'badge-success'; break;
+                        case 'High': badgeClass = 'badge-warning'; break;
+                        case 'Critical': badgeClass = 'badge-danger'; break;
+                        default: badgeClass = 'badge-secondary'; break;
                     }
-                },
-                {
-                    data: 'created_at',
-                    className: 'align-middle text-capitalize',
-                    render: function(data, type, row) {
-                        if (data) {
-                            const date = new Date(data);
-
-                            const options = { month: 'long' };
-                            const month = new Intl.DateTimeFormat('en-US', options).format(date);
-                            const day = date.getDate();
-                            const year = date.getFullYear();
-
-                            const hours = date.getHours();
-                            const minutes = date.getMinutes().toString().padStart(2, '0');
-                            const seconds = date.getSeconds().toString().padStart(2, '0');
-                            const ampm = hours >= 12 ? 'PM' : 'AM';
-                            const formattedHour = (hours % 12 || 12);
-
-                            return `${month} ${day}, ${year} | ${formattedHour}:${minutes}:${seconds} ${ampm}`;
-                        }
-                        return 'N/A';
-                    }
-                },
-                {
-                    data: 'status',
-                    render: function (data, type, row) {
-                        let badgeClass = '';
-                        let badgeContent = '';
-                        switch (data) {
-                            case 'Ongoing':
-                                badgeClass = 'badge-info';
-                                badgeContent = `Ongoing: Assigned to <span class="text-capitalize">${row.responder}</span>`
-                                break;
-                            case 'Resolved':
-                                badgeClass = 'badge-success';
-                                badgeContent = `Resolved: Resolved by <span class="text-capitalize">${row.responder}</span>`
-                                break;
-                            case 'Pending':
-                                badgeClass = 'badge-warning';
-                                badgeContent = `Pending`
-                                break;
-                            case 'Fake':
-                                badgeClass = 'badge-danger';
-                                badgeContent = `Fake: Tagged by <span class="text-capitalize">${row.responder}</span>`
-                                break;
-                            default:
-                                badgeClass = 'badge-warning';
-                                badgeContent = `Pending`;
-                                break;
-                        }
-                        return `<span class="badge ${badgeClass}">${badgeContent}</span>`
-                    }
-                },
-                {
-                    data: 'id',
-                    render: function (data, type, row) {
-                        return `
-                            <div class="d-flex">
-                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#viewTicket"
-                                        data-id="${data}" data-name="${row.name}" data-id_number="${row.id_number}" data-phone="${row.phone}" data-email="${row.email}" data-subject="${row.subject}" data-description="${row.description}" data-priority_level="${row.priority_level}" data-status="${row.status}" data-attachments="${row.attachments}" data-assigned_to="${row.assigned_to}" data-created="${row.created_at}">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        `;
-                    }
+                    return `<span class="badge ${badgeClass}">${data}</span>`;
                 }
-            ]
-        });
+            },
+            {
+                data: 'created_at',
+                className: 'align-middle text-capitalize',
+                render: function (data, type, row) {
+                    if (data) {
+                        const date = new Date(data);
+                        const options = { month: 'long' };
+                        const month = new Intl.DateTimeFormat('en-US', options).format(date);
+                        const day = date.getDate();
+                        const year = date.getFullYear();
+                        const hours = date.getHours();
+                        const minutes = date.getMinutes().toString().padStart(2, '0');
+                        const seconds = date.getSeconds().toString().padStart(2, '0');
+                        const ampm = hours >= 12 ? 'PM' : 'AM';
+                        const formattedHour = (hours % 12 || 12);
+                        return `${month} ${day}, ${year} | ${formattedHour}:${minutes}:${seconds} ${ampm}`;
+                    }
+                    return 'N/A';
+                }
+            },
+            {
+                data: 'status',
+                render: function (data, type, row) {
+                    let badgeClass = '';
+                    let badgeContent = '';
+                    switch (data) {
+                        case 'Ongoing':
+                            badgeClass = 'badge-info';
+                            badgeContent = `Ongoing: Assigned to <span class="text-capitalize">${row.responder}</span>`;
+                            break;
+                        case 'Resolved':
+                            badgeClass = 'badge-success';
+                            badgeContent = `Resolved: Resolved by <span class="text-capitalize">${row.responder}</span>`;
+                            break;
+                        case 'Pending':
+                            badgeClass = 'badge-warning';
+                            badgeContent = `Pending`;
+                            break;
+                        case 'Fake':
+                            badgeClass = 'badge-danger';
+                            badgeContent = `Fake: Tagged by <span class="text-capitalize">${row.responder}</span>`;
+                            break;
+                        case 'Archived':
+                            badgeClass = 'badge-danger';
+                            badgeContent = `Archived: Tagged by <span class="text-capitalize">${row.responder}</span>`;
+                            break;
+                        default:
+                            badgeClass = 'badge-warning';
+                            badgeContent = `Pending`;
+                            break;
+                    }
+                    return `<span class="badge ${badgeClass}">${badgeContent}</span>`;
+                }
+            },
+            {
+                data: 'id',
+                render: function (data, type, row) {
+                    return `
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#viewTicket"
+                                data-id="${data}" data-name="${row.name}" data-id_number="${row.id_number}" data-phone="${row.phone}" data-email="${row.email}" data-subject="${row.subject}" data-description="${row.description}" data-priority_level="${row.priority_level}" data-status="${row.status}" data-attachments="${row.attachments}" data-assigned_to="${row.assigned_to}" data-created="${row.created_at}" data-location="${row.location}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                `;
+                }
+            }
+        ]
     });
+
 </script>
 <script>
     var Toast = Swal.mixin({
@@ -317,6 +314,8 @@
         const subject = button.data('subject');
         const description = button.data('description');
         const attachments = button.data('attachments');
+        const status = button.data('status');
+        const location = button.data('location');
 
         $('#ticket-id').text(id);
         $('#edit-subject').val(subject);
@@ -327,16 +326,13 @@
         $('#edit-phone').val(phone);
         $('#edit-email').val(email);
         $('#edit-description').val(description);
+        $('#edit-location').val(location);
         const carousel = document.getElementById('report');
-        const carouselContent = attachments.map(attachment => `
-            <div class="item">
-                <center>
-                    <img style="height:250px; width:auto!important;" src="/img/helpdesk/${attachment}" alt="${attachment}">
-                </center>
+        carousel.innerHTML = attachments.map(attachment => `
+            <div class="item d-flex justify-content-center">
+                <img style="height:250px; width:auto!important;" src="/img/helpdesk/${attachment}" alt="${attachment}">
             </div>
         `).join(''); // Generate HTML content for each attachment
-
-        carousel.innerHTML = carouselContent;
 
         $("#report").owlCarousel({
             loop: true,
@@ -346,5 +342,60 @@
             autoplayTimeout: 3000,
             items: 1,
         });
+
+        // Button visibility logic
+        const markFakeBtn = $('button[name="action"][value="mark_fake"]');
+        const respondBtn = $('button[name="action"][value="respond"]');
+        const undoBtn = $('button[name="action"][value="undo"]');
+        const deleteBtn = $('#delete');
+        const doneBtn = $('button[name="action"][value="done"]');
+
+        // Hide all buttons by default
+        markFakeBtn.hide();
+        respondBtn.hide();
+        undoBtn.hide();
+        deleteBtn.hide();
+        doneBtn.hide();
+
+        // Show buttons based on status
+        switch (status) {
+            case 'Pending':
+                markFakeBtn.show();
+                respondBtn.show();
+                break;
+            case 'Ongoing':
+                deleteBtn.show();
+                doneBtn.show();
+                break;
+            case 'Fake':
+                undoBtn.show();
+                break;
+            case 'Resolved':
+                // Default 'Close' button remains visible
+                break;
+            case 'Archived':
+                undoBtn.show();
+                break;
+            default:
+                // Handle unknown status if necessary
+                break;
+        }
     });
+</script>
+<script>
+    function promptDelete() {
+        const reason = prompt("Please provide a reason for deletion:");
+        if (reason) {
+            document.getElementById('edit-reason').value = reason;
+            const form = document.getElementById('helpdesk-form');
+            const deleteButton = document.createElement('input');
+            deleteButton.type = 'hidden';
+            deleteButton.name = 'action';
+            deleteButton.value = 'delete';
+            form.appendChild(deleteButton);
+            form.submit();
+        } else {
+            alert("Deletion canceled. Reason is required.");
+        }
+    }
 </script>

@@ -19,13 +19,15 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5>User Management</h5>
-                                    <button type="button" class="btn btn-info btn-sm mx-1 mb-1" data-toggle="modal" data-target="#addUserModal">
-                                            <i class="fas fa-plus"></i> Add New User
+                            <div class="card-header">
+                                <h3 class="card-title mb-0">User Management</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addUserModal">
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
+                            </div>
+                            <div class="card-body">
                                 <table id="example3" class="table table-hover">
                                     <thead>
                                         <tr>
@@ -38,7 +40,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -64,7 +66,7 @@
                     <form action="/user-management/add" method="POST">
                         @csrf
                         <div class="modal-header">
-                            <h4 class="modal-title">Add User Information</h4>
+                            <h5 class="modal-title">Add User Information</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -100,7 +102,7 @@
                     <form action="/user-management/update" method="POST">
                         @csrf
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit User Information</h4>
+                            <h5 class="modal-title">Edit User Information</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -137,11 +139,11 @@
         $('#example3').DataTable({
             processing: true, // Show processing indicator
             serverSide: true, // Enable server-side processing
-            lengthChange: false,
             autoWidth: false,
             responsive: true,
             columnDefs: [
-                { "orderable": false, "targets": -1 } // Disable sorting on the last column
+                { "orderable": false, "targets": -1 }, // Disable sorting on the last column
+                { width: "1%", targets: -1 }
             ],
             ajax: {
                 url: '/user-management/data',
@@ -181,7 +183,7 @@
                     render: function (data, type, row) {
                         return `
                             <div class="d-flex">
-                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#editUserModal" 
+                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#editUserModal"
                                         data-id="${data}" data-idnumber="${row.id_number}" data-name="${row.name}" data-position="${row.position}" data-email="${row.email}" data-rolesid="${row.roles_id}" data-access='${JSON.stringify(row.roles)}'>
                                         <i class="fas fa-pencil-alt"></i>
                                 </button>
@@ -260,7 +262,7 @@
         nonSelectedListLabel: 'Available Roles',
         selectedListLabel: 'Selected Roles'
     });
-    
+
 </script>
 <script>
     // Populate the modal with data from the clicked button

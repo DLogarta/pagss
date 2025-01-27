@@ -19,13 +19,10 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title mb-0">User Activity Reports</h3>
+                            </div>
                             <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5>User Activity Reports</h5>
-                                    <!-- <button type="button" class="btn btn-info btn-sm mx-1 mb-1" data-toggle="modal" data-target="#addRoleModal">
-                                            <i class="fas fa-plus"></i> Add New Role
-                                    </button> -->
-                                </div>
                                 <table id="example2" class="table table-hover">
                                     <thead>
                                         <tr>
@@ -66,7 +63,6 @@
         $('#example2').DataTable({
             processing: true, // Show processing indicator
             serverSide: true, // Enable server-side processing
-            lengthChange: false,
             autoWidth: false,
             responsive: true,
             ajax: {

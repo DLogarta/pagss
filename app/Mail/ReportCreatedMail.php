@@ -18,6 +18,7 @@ class ReportCreatedMail extends Mailable
     public $topic;
     public $priority_level;
     public $description;
+    public $location;
 
     /**
      * Create a new message instance.
@@ -30,8 +31,9 @@ class ReportCreatedMail extends Mailable
      * @param string $topic
      * @param string $priority_level
      * @param string $description
+     * @param string $location
      */
-    public function __construct($case, $name, $employee_id, $email, $phone, $topic, $priority_level, $description)
+    public function __construct($case, $name, $employee_id, $email, $phone, $topic, $priority_level, $description, $location)
     {
         $this->case = $case;
         $this->name = $name;
@@ -41,6 +43,7 @@ class ReportCreatedMail extends Mailable
         $this->topic = $topic;
         $this->priority_level = $priority_level;
         $this->description = $description;
+        $this->location = $location;
     }
 
     /**
@@ -51,6 +54,6 @@ class ReportCreatedMail extends Mailable
     public function build()
     {
         return $this->subject('Helpdesk Report [Case: ' . $this->case . ']')
-            ->view('emails.report_created');
+            ->view('emails.helpdesk_emails.report_created');
     }
 }

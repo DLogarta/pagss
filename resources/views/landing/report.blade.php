@@ -30,7 +30,10 @@
                     <div class="col-md-6 mb-3">
                         <input class="form-control" type="text" placeholder="Enter issue subject" name="subject">
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-3 mb-3">
+                        <input class="form-control" type="text" placeholder="Location" name="location">
+                    </div>
+                    <div class="col-md-3 mb-3">
                         <select class="form-control" name="priority_level">
                             <option selected disabled>Select Priority Level</option>
                             <option value="Low">Low</option>

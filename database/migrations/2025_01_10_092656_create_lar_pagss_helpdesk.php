@@ -15,12 +15,14 @@ return new class extends Migration
             $table->string('id_number');
             $table->string('phone', 11);
             $table->string('email');
+            $table->string('location');
             $table->string('subject');
             $table->text('description');
             $table->enum('priority_level', ['Low', 'Medium', 'High', 'Critical'])->default('Low');
-            $table->enum('status', ['Pending', 'Ongoing', 'Resolved', 'Fake'])->default('Pending');
+            $table->enum('status', ['Pending', 'Ongoing', 'Resolved', 'Fake', 'Archived'])->default('Pending');
             $table->json('attachments')->nullable();
             $table->integer('assigned_to')->nullable();
+            $table->string('reason')->nullable();
             $table->timestamps();
         });
     }

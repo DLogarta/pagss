@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Helpdesk;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReportCreatedMail;
+use App\Mail\HelpdeskActionMail;
 use App\Helpers\Logger;
 
 class HelpdeskController extends Controller
@@ -45,6 +46,7 @@ class HelpdeskController extends Controller
                 'description' => 'required|string|max:5535',
                 'priority_level' => 'required|in:Low,Medium,High,Critical',
                 'uploaded_images' => 'required|json',
+                'location' => 'required|string|max:255',
             ]);
 
             $uploadedImages = json_decode($validatedData['uploaded_images'], true);
@@ -58,6 +60,7 @@ class HelpdeskController extends Controller
             $report->description = $validatedData['description'];
             $report->priority_level = $validatedData['priority_level'];
             $report->attachments = json_encode($uploadedImages);
+            $report->location = $validatedData['location'];
 
             $report->save();
 
@@ -69,7 +72,8 @@ class HelpdeskController extends Controller
                 $report->phone,
                 $report->subject,
                 $report->priority_level,
-                $report->description
+                $report->description,
+                $report->location
             ));
 
             return redirect('/report')->with('success', 'Report filed successfully. Please wait for a call from the IT department to confirm your identity and address your issue.');
@@ -83,26 +87,142 @@ class HelpdeskController extends Controller
     {
         try {
             $button_pressed = $request->input('action');
-            if ($button_pressed == 'respond') {
-                echo "Responded";
-            } else if ($button_pressed == 'mark_fake') {
-                $validatedData = $request->validate([
-                    'id' => 'required|string|max:8',
-                ]);
 
-                $report = Helpdesk::find($validatedData['id']);
+            $validatedData = $request->validate([
+                'id' => 'required|string|max:8',
+                'reason' => 'max:255',
+            ]);
 
-                $user = session('user');
+            $report = Helpdesk::find($validatedData['id']);
 
-                $report->status = "Fake";
-                $report->assigned_to = $user->id;
+            if (!$report) {
+                return redirect('it-helpdesk')->with('error', 'Report not found.');
+            }
 
-                $report->save();
+            $user = session('user');
+            $email = $report->email; // Assuming the report has an `email` field.
 
-                $logDetails = ucwords($user->name) . " marked Ticket # {$validatedData['id']} as fake";
-                Logger::logAction('Mark Report as Fake', $logDetails);
+            switch ($button_pressed) {
+                case 'respond':
+                    $report->status = "Ongoing";
+                    $report->assigned_to = $user->id;
+                    $report->save();
 
-                return redirect('it-helpdesk')->with('success', 'Report has been marked as Fake.');
+                    $logDetails = ucwords($user->name) . " responded to Ticket # {$validatedData['id']}";
+                    Logger::logAction('Responded to Report', $logDetails);
+
+                    Mail::to($email)->send(new HelpdeskActionMail(
+                        $report->id,
+                        $report->name,
+                        $report->employee_id,
+                        $report->email,
+                        $report->phone,
+                        $report->topic,
+                        $report->priority_level,
+                        $report->description,
+                        'respond',
+                        $user->name
+                    ));
+
+                    return redirect('it-helpdesk')->with('success', 'Report responded.');
+                    break;
+
+                case 'mark_fake':
+                    $report->status = "Fake";
+                    $report->assigned_to = $user->id;
+                    $report->save();
+
+                    $logDetails = ucwords($user->name) . " marked Ticket # {$validatedData['id']} as fake";
+                    Logger::logAction('Mark Report as Fake', $logDetails);
+
+                    Mail::to($email)->send(new HelpdeskActionMail(
+                        $report->id,
+                        $report->name,
+                        $report->employee_id,
+                        $report->email,
+                        $report->phone,
+                        $report->topic,
+                        $report->priority_level,
+                        $report->description,
+                        'make_fake'
+                    ));
+
+                    return redirect('it-helpdesk')->with('success', 'Report has been marked as Fake.');
+                    break;
+
+                case 'done':
+                    $report->status = "Resolved";
+                    $report->assigned_to = $user->id;
+                    $report->save();
+
+                    $logDetails = ucwords($user->name) . " marked Ticket # {$validatedData['id']} as Resolved";
+                    Logger::logAction('Mark Report as Resolved', $logDetails);
+
+                    Mail::to($email)->send(new HelpdeskActionMail(
+                        $report->id,
+                        $report->name,
+                        $report->employee_id,
+                        $report->email,
+                        $report->phone,
+                        $report->topic,
+                        $report->priority_level,
+                        $report->description,
+                        'done'
+                    ));
+
+                    return redirect('it-helpdesk')->with('success', 'Report has been marked as Resolved.');
+                    break;
+
+                case 'delete':
+                    $report->status = "Archived";
+                    $report->reason = $validatedData['reason'];
+                    $report->save();
+
+                    $logDetails = ucwords($user->name) . " archived Ticket # {$validatedData['id']}";
+                    Logger::logAction('Archive Report', $logDetails);
+
+                    Mail::to($email)->send(new HelpdeskActionMail(
+                        $report->id,
+                        $report->name,
+                        $report->employee_id,
+                        $report->email,
+                        $report->phone,
+                        $report->topic,
+                        $report->priority_level,
+                        $report->description,
+                        'delete',
+                        null,
+                        $report->reason,
+                    ));
+
+                    return redirect('it-helpdesk')->with('success', 'Report has been archived.');
+                    break;
+
+                case 'undo':
+                    $report->status = "Pending";
+                    $report->assigned_to = null;
+                    $report->save();
+
+                    $logDetails = ucwords($user->name) . " reverted Ticket # {$validatedData['id']} to Pending";
+                    Logger::logAction('Revert Report to Pending', $logDetails);
+
+                    Mail::to($email)->send(new HelpdeskActionMail(
+                        $report->id,
+                        $report->name,
+                        $report->employee_id,
+                        $report->email,
+                        $report->phone,
+                        $report->topic,
+                        $report->priority_level,
+                        $report->description,
+                        'undo'
+                    ));
+
+                    return redirect('it-helpdesk')->with('success', 'Report has been reverted to Pending.');
+                    break;
+
+                default:
+                    return redirect('it-helpdesk')->with('error', 'Unknown action.');
             }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', "An error occurred. Error: " . $e->getMessage());

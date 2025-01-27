@@ -7,7 +7,7 @@
 ## Learning Laravel
 
 1. Go to domains directory
-2. do "git clone https://github.com/DLogarta/pagss.git darkblue-pig-858589.hostingersite.com"
+2. do "git clone https://github.com/DLogarta/pagss.git pagss.tprod.site"
 
 ## For Updating/Refresh from MAIN Branch
 
@@ -40,7 +40,7 @@
 3. do "rm -rf *"
 4. do "rm -rf .*"
 5. Go to domains directory 
-6. do "git clone https://github.com/DLogarta/pagss.git darkblue-pig-858589.hostingersite.com"
+6. do "git clone https://github.com/DLogarta/pagss.git pagss.tprod.site"
 7. do "ls" to verify 
 8. do "cp .env.production .env"
 9. do "php artisan config:cache"

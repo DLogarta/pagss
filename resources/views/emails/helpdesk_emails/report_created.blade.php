@@ -16,6 +16,7 @@
     <li><strong>Phone Number:</strong> {{ $phone }}</li>
     <li><strong>Report Subject:</strong> <span style="text-transform: capitalize">{{ $topic }}</span></li>
     <li><strong>Priority Level:</strong> <span style="text-transform: capitalize">{{ $priority_level }}</span></li>
+    <li><strong>Location:</strong> <span style="text-transform: capitalize">{{ $location }}</span></li>
 </ul>
 
 <p><strong>Description:</strong><br>

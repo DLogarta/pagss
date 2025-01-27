@@ -19,13 +19,15 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5>Permission Management</h5>
-                                    <button type="button" class="btn btn-info btn-sm mx-1 mb-1" data-toggle="modal" data-target="#addPermissionModal">
-                                            <i class="fas fa-plus"></i> Add New Permission
+                            <div class="card-header">
+                                <h3 class="card-title mb-0">Permission Management</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addPermissionModal">
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
+                            </div>
+                            <div class="card-body">
                                 <table id="example2" class="table table-hover">
                                     <thead>
                                         <tr>
@@ -60,7 +62,7 @@
                     <form action="/permission-management/add" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
-                            <h4 class="modal-title">Add Permission Information</h4>
+                            <h5 class="modal-title">Add Permission Information</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -161,7 +163,7 @@
                     <form action="/permission-management/update" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Role Information</h4>
+                            <h5 class="modal-title">Edit Role Information</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -263,11 +265,11 @@
         $('#example2').DataTable({
             processing: true, // Show processing indicator
             serverSide: true, // Enable server-side processing
-            lengthChange: false,
             autoWidth: false,
             responsive: true,
             columnDefs: [
-                { "orderable": false, "targets": -1 } // Disable sorting on the last column
+                { "orderable": false, "targets": -1 }, // Disable sorting on the last column
+                { width: "1%", targets: -1 }
             ],
             ajax: {
                 url: '/permission-management/data',

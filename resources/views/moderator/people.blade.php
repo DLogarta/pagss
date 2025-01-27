@@ -19,13 +19,15 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5>Personnel Management</h5>
-                                    <button type="button" class="btn btn-info btn-sm mx-1 mb-1" data-toggle="modal" data-target="#addPeopleModal">
-                                            <i class="fas fa-plus"></i> Add New Personnel
+                            <div class="card-header">
+                                <h3 class="card-title mb-0">Personnel Management</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addPeopleModal">
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
+                            </div>
+                            <div class="card-body">
                                 <table id="example2" class="table table-hover">
                                     <thead>
                                         <tr>
@@ -36,7 +38,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -60,19 +62,19 @@
                     <form action="/c-people/add" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
-                            <h4 class="modal-title">Add Organization Personnel Information</h4>
+                            <h5 class="modal-title">Add Organization Personnel Information</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                                <center>
-                                    <img class="img-fluid" style="height:200px;" id="edit-image-add" src="{{ asset('/img/organization/image-placeholder.jpg' ?? '/img/organization/image-placeholder.jpg') }}"></img>
-                                </center>
+                                <div class="d-flex justify-content-center">
+                                    <img class="img-fluid" style="height:200px;" id="edit-image-add" alt="Personnel's Image" src="{{ asset('/img/organization/image-placeholder.jpg' ?? '/img/organization/image-placeholder.jpg') }}">
+                                </div>
                                 <br>
                                 <label for="name">Image:</label>
                                 <input class="text-uppercase form-control" type="file" id="image-input-add" name="image" required>
-                                
+
                                 <label for="name">Name:</label>
                                 <input class="text-uppercase form-control" type="text" name="name" required>
 
@@ -100,7 +102,7 @@
                     <form action="/c-people/update" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Organization Personnels Information</h4>
+                            <h5 class="modal-title">Edit Organization Personnels Information</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -108,13 +110,13 @@
                         <div class="modal-body">
                                 <input class="form-control" id="edit-id" name="id" hidden required>
 
-                                <center>
-                                    <img class="img-fluid" style="height:200px;" id="edit-image" src="{{ asset('/img/organization/image-placeholder.jpg') }}"></img>
-                                </center>
+                                <div class="d-flex justify-content-center">
+                                    <img class="img-fluid" style="height:200px;" id="edit-image" alt="Personnel's Image" src="{{ asset('/img/organization/image-placeholder.jpg') }}">
+                                </div>
                                 <br>
                                 <label for="name">Image:</label>
                                 <input class="text-uppercase form-control" type="file" id="image-input" name="image">
-                                
+
                                 <label for="name">Name:</label>
                                 <input class="text-uppercase form-control" type="text" id="edit-name" name="name" required>
 
@@ -142,11 +144,11 @@
         $('#example2').DataTable({
             processing: true, // Show processing indicator
             serverSide: true, // Enable server-side processing
-            lengthChange: false,
             autoWidth: false,
             responsive: true,
             columnDefs: [
-                { "orderable": false, "targets": -1 } // Disable sorting on the last column
+                { "orderable": false, "targets": -1 }, // Disable sorting on the last column
+                { width: "1%", targets: -1 }
             ],
             ajax: {
                 url: '/c-people/data',
@@ -164,7 +166,8 @@
                                 <div class="info">
                                     <p class="d-block mb-0 text-uppercase">${data}</p>
                                 </div>
-                            </div>`;
+                            </div>
+                        `;
                     }
                 },
                 { data: 'title', className: 'align-middle text-uppercase' },
@@ -180,11 +183,11 @@
                     render: function (data, type, row) {
                         return `
                             <div class="d-flex">
-                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#editPeopleModal" 
-                                        data-id="${data}" 
-                                        data-image="${row.image}" 
-                                        data-name="${row.name}" 
-                                        data-title="${row.title}" 
+                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#editPeopleModal"
+                                        data-id="${data}"
+                                        data-image="${row.image}"
+                                        data-name="${row.name}"
+                                        data-title="${row.title}"
                                         data-category="${row.category}">
                                         <i class="fas fa-pencil-alt"></i>
                                 </button>

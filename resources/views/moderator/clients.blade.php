@@ -19,13 +19,15 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5>Client Management</h5>
-                                    <button type="button" class="btn btn-info btn-sm mx-1 mb-1" data-toggle="modal" data-target="#addClientModal">
-                                            <i class="fas fa-plus"></i> Add New Client
+                            <div class="card-header">
+                                <h3 class="card-title mb-0">Client Management</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addClientModal">
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
+                            </div>
+                            <div class="card-body">
                                 <table id="example2" class="table table-hover">
                                     <thead>
                                         <tr>
@@ -34,7 +36,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -56,7 +58,7 @@
                     <form action="/c-clients/add" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
-                            <h4 class="modal-title">Add Client Information</h4>
+                            <h5 class="modal-title">Add Client Information</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -68,7 +70,7 @@
                                 <br>
                                 <label for="name">Image:</label>
                                 <input class="text-uppercase form-control" type="file" id="image-input-add" name="image" required>
-                                
+
                                 <label for="name">Name:</label>
                                 <input class="text-uppercase form-control" type="text" name="name" required>
                         </div>
@@ -87,7 +89,7 @@
                     <form action="/c-clients/update" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit Client Information</h4>
+                            <h5 class="modal-title">Edit Client Information</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -101,7 +103,7 @@
                                 <br>
                                 <label for="name">Image:</label>
                                 <input class="text-uppercase form-control" type="file" id="image-input" name="image">
-                                
+
                                 <label for="name">Name:</label>
                                 <input class="text-uppercase form-control" type="text" id="edit-name" name="name" required>
                         </div>
@@ -120,11 +122,11 @@
         $('#example2').DataTable({
             processing: true, // Show processing indicator
             serverSide: true, // Enable server-side processing
-            lengthChange: false,
             autoWidth: false,
             responsive: true,
             columnDefs: [
-                { "orderable": false, "targets": -1 } // Disable sorting on the last column
+                { "orderable": false, "targets": -1 }, // Disable sorting on the last column
+                { width: "1%", targets: -1 }
             ],
             ajax: {
                 url: '/c-clients/data',
@@ -150,7 +152,7 @@
                     render: function (data, type, row) {
                         return `
                             <div class="d-flex">
-                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#editClientModal" 
+                                <button type="button" class="btn btn-info btn-sm mx-1" data-toggle="modal" data-target="#editClientModal"
                                         data-id="${data}" data-image="${row.image}" data-name="${row.name}">
                                         <i class="fas fa-pencil-alt"></i>
                                 </button>
